@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { DashBoard } from "./pages/dashboard";
 
 function App() {
-   return <></>;
+   return (
+      <>
+         <DashBoard />
+      </>
+   );
 }
 
 export default App;
