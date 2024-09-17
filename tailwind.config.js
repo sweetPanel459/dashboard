@@ -6,6 +6,7 @@ export default {
          fontFamily: {
             poppins: "Poppins",
             roboto: "Roboto Mono",
+            montserrat: "Montserrat",
          },
       },
    },
