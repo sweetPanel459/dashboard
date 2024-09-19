@@ -29,7 +29,6 @@ export const Input = ({
          )}
          <input
             type={type}
-            value={value}
             id={id}
             name={name}
             onChange={changeInput}
