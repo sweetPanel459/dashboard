@@ -2,7 +2,7 @@ import { Input } from "../components/common/input";
 import { Select } from "../components/common/select";
 
 import { DashboardHeader } from "../containers/dashboardHeader";
-import { TableHeader, TableBody } from "../containers/tableSections";
+import { TableHeader, TableRow } from "../containers/tableSections";
 
 import { FaSearch } from "react-icons/fa";
 
@@ -10,7 +10,7 @@ import "../styles/table.css";
 
 export const DashBoard = () => {
    return (
-      <section className="flex flex-col gap-10 w-screen h-screen px-72 bg-gray-50 overflow-y-auto">
+      <section className="flex flex-col gap-10 w-screen h-screen px-60 bg-gray-50 overflow-y-auto">
          <DashboardHeader />
 
          <div className="flex flex-col gap-8 w-full h-screen">
@@ -27,9 +27,14 @@ export const DashBoard = () => {
                />
             </header>
 
-            <table className="flex flex-col gap-2 content-start w-full flex-grow">
-               <TableHeader />
-               <TableBody />
+            <table className="flex flex-col gap- content-start w-full flex-grow">
+               <thead className="w-full h-fit pb-2 border-b-2 border-gray-500">
+                  <TableHeader />
+               </thead>
+
+               <tbody className="flex flex-col gap-2">
+                  <TableRow />
+               </tbody>
             </table>
          </div>
       </section>
