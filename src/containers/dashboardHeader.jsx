@@ -7,7 +7,7 @@ import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 
 export const DashboardHeader = () => {
    return (
-      <header className="flex flex-col gap-10 w-full h-52 p-5 bg-red-400">
+      <header className="flex flex-col gap-10 rounded-b w-full h-52 p-5 bg-red-400">
          <nav className="flex justify-between items-center w-full">
             <Text
                text="Dashboard"
