@@ -3,10 +3,13 @@ import { Select } from "../components/common/select";
 
 import { DashboardHeader } from "../containers/dashboardHeader";
 import { TableHeader, TableRow } from "../containers/tableSections";
+
+import { EditRow } from "../components/modals/editRow";
+
 import { FaSearch } from "react-icons/fa";
 import { GrTableAdd } from "react-icons/gr";
 
-import "../styles/table.css";
+import "../styles/style.css";
 
 const exampleData = [
    ["TATIANA CAROLINA", 1, 1, 1, 1, 4, 1],
@@ -63,6 +66,7 @@ export const DashBoard = () => {
                </tbody>
             </table>
          </div>
+         {/* <EditRow /> */}
       </section>
    );
 };

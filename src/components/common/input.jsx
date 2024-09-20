@@ -5,7 +5,6 @@ export const Input = ({
    type,
    name,
    label,
-   value,
    button,
    placeholder,
    styleLabel,
@@ -46,7 +45,6 @@ Input.propTypes = {
    placeholder: PropTypes.string,
    id: PropTypes.string.isRequired,
    name: PropTypes.string,
-   value: PropTypes.string,
    className: PropTypes.string,
    required: PropTypes.bool,
    disabled: PropTypes.bool,
@@ -55,7 +53,6 @@ Input.propTypes = {
 Input.defaultProps = {
    type: "text",
    label: "",
-   value: "",
    placeholder: "",
    name: "",
    className: "",
