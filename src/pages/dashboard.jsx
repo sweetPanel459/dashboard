@@ -68,7 +68,7 @@ export const DashBoard = () => {
             </table>
          </div>
          {/* <EditRow /> */}
-         <ViewMoreTables />
+         {/* <ViewMoreTables /> */}
       </section>
    );
 };
