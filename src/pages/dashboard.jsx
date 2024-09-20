@@ -5,6 +5,7 @@ import { DashboardHeader } from "../containers/dashboardHeader";
 import { TableHeader, TableRow } from "../containers/tableSections";
 
 import { EditRow } from "../components/modals/editRow";
+import { ViewMoreTables } from "../components/modals/viewMoreTables";
 
 import { FaSearch } from "react-icons/fa";
 import { GrTableAdd } from "react-icons/gr";
@@ -67,6 +68,7 @@ export const DashBoard = () => {
             </table>
          </div>
          {/* <EditRow /> */}
+         <ViewMoreTables />
       </section>
    );
 };
