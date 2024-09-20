@@ -1,8 +1,8 @@
 import { Button } from "../components/common/button";
 import { Text, Title, IconText } from "../components/common/texts";
 
-import { MdEvent } from "react-icons/md";
-import { FaTableList } from "react-icons/fa6";
+import { BsTable } from "react-icons/bs";
+import { MdOutlineEmojiEvents } from "react-icons/md";
 import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 
 export const DashboardHeader = () => {
@@ -21,9 +21,9 @@ export const DashboardHeader = () => {
                   styleButton="items-center gap-2 font-roboto font-medium text-white text-xl"
                />
                <Button
-                  icon={<MdEvent />}
-                  text="Eventos"
-                  styleIcon="text-2xl"
+                  icon={<BsTable />}
+                  text="Clasificaciones"
+                  styleIcon="text-xl"
                   styleButton="items-center gap-2 font-roboto font-medium text-white text-xl"
                />
                <Button
@@ -37,11 +37,10 @@ export const DashboardHeader = () => {
                text="MUJERES PRINCIPIANTES"
                style="tracking-widest font-medium font-montserrat text-4xl text-white"
             />
-
             <IconText
-               icon={<FaTableList />}
+               icon={<MdOutlineEmojiEvents />}
                text="Puntaje"
-               style="items-center gap-2 text-xl text-white"
+               style="items-center gap-2 font-kanit font-thin text-2xl text-white"
             />
          </section>
       </header>
