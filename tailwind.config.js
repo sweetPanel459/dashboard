@@ -7,6 +7,7 @@ export default {
             poppins: "Poppins",
             roboto: "Roboto Mono",
             montserrat: "Montserrat",
+            grotesk: "Space Grotesk",
          },
       },
    },
