@@ -38,7 +38,7 @@ const exampleData = [
 
 export const DashBoard = () => {
    return (
-      <section className="flex flex-col gap-10 w-screen h-screen px-52 bg-gray-50 overflow-y-auto">
+      <section className="flex flex-col gap-10 w-screen h-screen px-52 bg-gray-100 overflow-y-auto">
          <DashboardHeader />
 
          <div className="flex flex-col gap-8 pb-10 w-full h-fit">
@@ -55,7 +55,7 @@ export const DashBoard = () => {
                />
             </header>
 
-            <table className="flex flex-col gap- content-start w-full flex-grow">
+            <table className="flex flex-col content-start flex-grow w-full p-3 rounded bg-white">
                <thead className="w-full h-fit pb-2 border-b-2 border-gray-500">
                   <TableHeader />
                </thead>
