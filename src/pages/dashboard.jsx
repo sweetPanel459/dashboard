@@ -3,8 +3,8 @@ import { Select } from "../components/common/select";
 
 import { DashboardHeader } from "../containers/dashboardHeader";
 import { TableHeader, TableRow } from "../containers/tableSections";
-
 import { FaSearch } from "react-icons/fa";
+import { GrTableAdd } from "react-icons/gr";
 
 import "../styles/table.css";
 
@@ -37,7 +37,7 @@ export const DashBoard = () => {
       <section className="flex flex-col gap-10 w-screen h-screen px-52 bg-gray-50 overflow-y-auto">
          <DashboardHeader />
 
-         <div className="flex flex-col gap-8 w-full h-screen pb-32">
+         <div className="flex flex-col gap-8 pb-10 w-full h-fit">
             <header className="flex justify-between items-center w-full pb-5 border-b border-gray-200">
                <Select
                   placeholder="Mostrar..."
