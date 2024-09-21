@@ -28,7 +28,7 @@ export const TableHeader = () => (
                text={index.text}
                icon={index.click && <FaSortAmountDown />}
                styleIcon="order-2 relative bottom-0.5 text-xl"
-               styleButton="items-center justify-center w-full gap-3 h-full text-xl font-montserrat font-bold text-gray-700 hover:text-gray-900"
+               styleButton="items-center justify-center w-full gap-3 h-full text-xl font-montserrat font-bold text-white hover:text-gray-900"
             />
          </td>
       ))}
@@ -37,11 +37,11 @@ export const TableHeader = () => (
 );
 
 export const TableRow = ({ cellValues }) => (
-   <tr className="flex items-center w-full gap-2 py-3 border-b border-gray-300">
+   <tr className="flex items-center w-full gap-2 py-3 border-b border-gray-600">
       {cellValues.map((index, key) => (
          <td
             key={key}
-            className="relative right-1 text-center w-full font-grotesk font-edium"
+            className="relative right-1 text-center text-white w-full font-grotesk"
          >
             {index}
          </td>
