@@ -20,7 +20,7 @@ const optionHeadExample = [
 ];
 
 export const TableHeader = () => (
-   <tr className="flex w-full gap-2 ">
+   <tr className="flex w-full gap-2 py-2">
       {optionHeadExample.map((index, keys) => (
          <td className="w-full">
             <Button
@@ -41,7 +41,7 @@ export const TableRow = ({ cellValues }) => (
       {cellValues.map((index, key) => (
          <td
             key={key}
-            className="relative right-1 text-center w-full font-grotesk font-edium"
+            className="relative right-1 text-center text-gray-600 w-full font-grotesk"
          >
             {index}
          </td>

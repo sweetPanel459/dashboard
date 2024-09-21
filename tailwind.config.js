@@ -8,6 +8,7 @@ export default {
             roboto: "Roboto Mono",
             montserrat: "Montserrat",
             grotesk: "Space Grotesk",
+            kanit: "Kanit",
          },
       },
    },
