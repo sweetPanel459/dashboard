@@ -38,27 +38,27 @@ const exampleData = [
 
 export const DashBoard = () => {
    return (
-      <section className="flex flex-col gap-10 w-screen h-screen px-52 bg-slate-700 overflow-y-auto">
+      <section className="flex flex-col gap-10 w-screen h-screen px-52 bg-gray-100 overflow-y-auto">
          <DashboardHeader />
 
          <div className="flex flex-col gap-8 pb-10 w-full h-fit">
-            <header className="flex justify-between items-center flex-grow mx-3 pb-5 border-b border-gray-500">
+            <header className="flex justify-between items-center flex-grow mx-3 pb-5 border-b border-gray-300">
                <Select
                   placeholder="Mostrar..."
-                  styleButton="text-2xl text-slate-400"
-                  styleContent="w-32 px-2 p-1 border border-gray-500 bg-slate-600"
+                  styleButton="text-2xl text-slate-500"
+                  styleContent="w-32 px-2 p-1 border border-gray-500 bg-white"
                />
                <Input
                   button={<FaSearch />}
                   placeholder="Buscar..."
                   styleInput="bg-transparent"
-                  styleButton="flex justify-center items-center order-2 h-full w-10 rounded bg-slate-400 text-white"
-                  styleContainer="flex items-center gap-2 h-full p-1 pl-2 rounded border border-gray-500 bg-slate-600"
+                  styleButton="flex justify-center items-center order-2 h-full w-10 rounded bg-slate-500 text-white"
+                  styleContainer="flex items-center gap-2 h-full p-1 pl-2 rounded border border-gray-500 bg-white"
                />
             </header>
 
-            <table className="flex flex-col content-start flex-grow w-full p-3 rounded">
-               <thead className="w-full h-fit pb-2 border-b-4 border-gray-500">
+            <table className="flex flex-col content-start flex-grow w-full p-3 rounded bg-white">
+               <thead className="w-full h-fit pb-2 border-b-2 border-gray-500">
                   <TableHeader />
                </thead>
 
