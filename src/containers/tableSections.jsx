@@ -19,16 +19,16 @@ const optionHeadExample = [
    { text: "Posicion final", click: "s" },
 ];
 
-export const TableHeader = () => (
+export const TableHeader = ({ style, styleButton }) => (
    <tr className="flex w-full gap-2 py-2">
       {optionHeadExample.map((index, keys) => (
-         <td className="w-full">
+         <td className={`w-full ${styleButton}`}>
             <Button
                key={keys}
                text={index.text}
                icon={index.click && <FaSortAmountDown />}
                styleIcon="order-2 relative bottom-0.5 text-xl"
-               styleButton="items-center justify-center w-full gap-3 h-full text-xl font-montserrat font-bold text-gray-700 hover:text-gray-900"
+               styleButton="items-center justify-center w-full gap-3 h-full text-xl font-montserrat font-bold  hover:text-gray-900"
             />
          </td>
       ))}
@@ -36,12 +36,12 @@ export const TableHeader = () => (
    </tr>
 );
 
-export const TableRow = ({ cellValues }) => (
-   <tr className="flex items-center w-full gap-2 py-3 border-b border-gray-300">
+export const TableRow = ({ style, styleColm, cellValues }) => (
+   <tr className={`${style} flex items-center w-full gap-2 py-3 border-b`}>
       {cellValues.map((index, key) => (
          <td
             key={key}
-            className="relative right-1 text-center text-gray-600 w-full font-grotesk"
+            className={`${styleColm} relative right-1 text-center  w-full font-grotesk`}
          >
             {index}
          </td>

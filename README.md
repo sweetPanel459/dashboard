@@ -10,10 +10,12 @@ Currently, two official plugins are available:
 # color palette
 
 - **light mode**
+
   - `bg-gray-100` - main background
   - `bg-slate-600` - header
   - `text-white` - text header
   - `border-gray-300` - border body header
+
   - `bg-white` - select body header
     - `text-slate-400` - button select body header
   - `bg-white` - input body header
@@ -24,7 +26,9 @@ Currently, two official plugins are available:
   - `border-gray-300` - table row
   - `text-gray-700` - text header table
   - `text-gray-600` - text row table
+
 - **dark mode**
+
   - `bg-slate-700` - main background
   - `bg-slate-800` - header
   - `text-white` - text header
