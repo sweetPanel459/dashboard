@@ -4,6 +4,8 @@ import { Select } from "../components/common/select";
 import { DashboardHeader } from "../containers/dashboardHeader";
 import { TableHeader, TableRow } from "../containers/tableSections";
 
+import { UploadTable } from "../components/modals/uploadTable";
+
 // import { EditRow } from "../components/modals/editRow";
 // import { ViewMoreTables } from "../components/modals/viewMoreTables";
 
@@ -35,6 +37,16 @@ const exampleData = [
   ["DINA TEHERAN", 19, 18, 16, 16, 73, 19],
   ["MARIA FERNANDA COL", 18, 19, 21, 18, 76, 21],
 ];
+
+/*TODO:
+ * - create modal to upload tables - in procces
+ * - create the custom hook in charge of the state of the modals (open/close)
+ * - create the logic to upload xlsx
+ * - create filter logic to accept only tables
+ * - make http requests to endpoints
+ * - bind components to http requests
+ * - create filter logic on tables
+ * */
 
 export const DashBoard = () => {
   return (
@@ -75,6 +87,7 @@ export const DashBoard = () => {
         </table>
       </div>
       {/* <EditRow /> */}
+      <UploadTable />
       {/* <ViewMoreTables /> */}
     </section>
   );
