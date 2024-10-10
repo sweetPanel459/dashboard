@@ -1,11 +1,11 @@
 import { DashBoard } from "./pages/dashboard";
 
 function App() {
-   return (
-      <>
-         <DashBoard />
-      </>
-   );
+  return (
+    <>
+      <DashBoard />
+    </>
+  );
 }
 
 export default App;
