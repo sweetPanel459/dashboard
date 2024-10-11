@@ -7,7 +7,7 @@ import { BsTable } from "react-icons/bs";
 import { MdOutlineEmojiEvents } from "react-icons/md";
 import { FaHome, FaSun, FaMoon } from "react-icons/fa";
 
-export const DashboardHeader = ({ styleHeader, state }) => {
+export const DashboardHeader = ({ styleHeader, clickOpenModal }) => {
   const [darkMode, useDarkMode] = useState(false);
 
   const toggleDarkModeHandler = () => {
@@ -36,6 +36,7 @@ export const DashboardHeader = ({ styleHeader, state }) => {
             text="Clasificaciones"
             styleIcon="text-xl"
             styleButton="items-center gap-2 font-roboto font-medium text-white text-xl"
+            click={() => clickOpenModal("modal-no")}
           />
           <Button
             icon={!darkMode ? <FaSun /> : <FaMoon />}

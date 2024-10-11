@@ -26,11 +26,14 @@ const TableCardObtained = () => (
   </div>
 );
 
-export const UploadTable = () => {
+export const UploadTable = ({ close }) => {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur">
+    <div
+      id="modal-no"
+      className="absolute inset-0 hidden items-center justify-center bg-transparent backdrop-blur"
+    >
       <section className="modal flex flex-col gap-5 w-3/5 h-2/3 p-5 rounded-lg border border-gray-500 bg-white">
-        <ModalHeader text="Subir tabla" />
+        <ModalHeader text="Subir tabla" click={close} />
         <form className="flex flex-grow gap-5 w-full">
           <section className="flex flex-col gap-5 w-full h-full ">
             <Input
