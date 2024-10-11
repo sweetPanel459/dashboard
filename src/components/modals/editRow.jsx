@@ -1,21 +1,15 @@
-import { useEffect } from "react";
-
 import { Input } from "../common/input";
 
 import { ModalHeader } from "./modalHeader";
 
-export const EditRow = ({ modalRef, load }) => {
-  useEffect(() => {
-    load();
-  }, []);
-
+export const EditRow = ({ modalRef, close }) => {
   return (
     <div
       ref={modalRef}
       className="edit-row absolute inset-0 hidden items-center justify-center bg-transparent backdrop-blur"
     >
       <section className="modal flex flex-col w-3/4 h-2/6 p-3 rounded-lg border border-gray-500 bg-white">
-        <ModalHeader text="Editar fila de la tabla" />
+        <ModalHeader text="Editar fila de la tabla" click={close} />
         <form className="flex flex-grow items-center gap-5 pb-10">
           {/* while I make it dynamic for each row of the tables */}
           <Input

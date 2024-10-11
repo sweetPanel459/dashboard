@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import { Input } from "../common/input";
 import { DoubleText, Text, Title } from "../common/texts";
 
@@ -8,11 +6,7 @@ import { ModalHeader } from "./modalHeader";
 import { FaTableList } from "react-icons/fa6";
 import { FaFileUpload } from "react-icons/fa";
 
-export const UploadTable = ({ modalRef, load }) => {
-  useEffect(() => {
-    load();
-  }, []);
-
+export const UploadTable = ({ modalRef, close }) => {
   return (
     <div
       ref={modalRef}
