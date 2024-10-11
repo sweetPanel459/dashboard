@@ -1,36 +1,27 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef, useCallback } from "react";
 
 export const useModalToggle = () => {
-  const current_modal = useRef(null);
-  const [element, setElement] = useState({});
+  const modalRefs = useRef({});
 
-  useEffect(() => {}, [current_modal]);
+  const openModal = useCallback((modalId) => {
+    const modalNode = modalRefs.current[modalId];
+    if (modalNode) {
+      modalNode.classList.remove("hidden");
+      modalNode.classList.add("flex");
+    }
+  });
 
-  const add = () => {
-    setElement((prev) => ({
-      ...prev,
-      [`elemento_${Object.values(element).length}`]: current_modal.current,
-    }));
-    console.log("ejecutado por:", current_modal);
-  };
+  const closeModal = useCallback((modalId) => {
+    const modalNode = modalRefs.current[modalId];
+    if (modalNode) {
+      modalNode.classList.remove("flex");
+      modalNode.classList.add("hidden");
+    }
+  });
 
-  // const openModal = (modalId) => {
-  //   const modal = currentModal.current.querySelector(`#${modalId}`);
-  //
-  //   if (modal.classList.contains("hidden")) {
-  //     modal.classList.remove("hidden");
-  //     modal.classList.add("flex");
-  //   }
-  // };
-  //
-  // const closeModal = (modalId) => {
-  //   const modal = currentModal.current.querySelector(`#${modalId}`);
-  //
-  //   if (modal.classList.contains("flex")) {
-  //     modal.classList.remove("flex");
-  //     modal.classList.add("hidden");
-  //   }
-  // };
+  const registerModalRef = useCallback((modalId, node) => {
+    if (node) modalRefs.current[modalId] = node;
+  });
 
-  return { current_modal, add };
+  return { registerModalRef, openModal, closeModal };
 };
