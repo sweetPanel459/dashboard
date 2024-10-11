@@ -1,3 +1,5 @@
+import { useRef, useEffect } from "react";
+
 import { Input } from "../components/common/input";
 import { Select } from "../components/common/select";
 
@@ -6,11 +8,12 @@ import { TableHeader, TableRow } from "../containers/tableSections";
 
 import { UploadTable } from "../components/modals/uploadTable";
 
-// import { EditRow } from "../components/modals/editRow";
-// import { ViewMoreTables } from "../components/modals/viewMoreTables";
+import { EditRow } from "../components/modals/editRow";
+import { ViewMoreTables } from "../components/modals/viewMoreTables";
 
 import { FaSearch } from "react-icons/fa";
-// import { GrTableAdd } from "react-icons/gr";
+
+import { useModalToggle } from "../hooks/useModalToggle";
 
 import "../styles/style.css";
 
@@ -37,7 +40,6 @@ const exampleData = [
   ["DINA TEHERAN", 19, 18, 16, 16, 73, 19],
   ["MARIA FERNANDA COL", 18, 19, 21, 18, 76, 21],
 ];
-
 /*TODO:
  * - create modal to upload tables - in procces
  * - create the custom hook in charge of the state of the modals (open/close)
@@ -49,11 +51,18 @@ const exampleData = [
  * */
 
 export const DashBoard = () => {
+  const { current_modal, add } = useModalToggle();
+  const a = () => {
+    console.log("ostia");
+  };
+
   return (
     <section className="flex flex-col gap-10 w-screen h-screen px-52 overflow-y-auto bg-gray-100 dark:bg-gray-700 ">
-      <DashboardHeader styleHeader="bg-slate-600 dark:bg-slate-800" />
-
-      <div className="flex flex-col gap-8 pb-10 w-full h-fit">
+      <DashboardHeader
+        // clickOpenModal={addElement}
+        styleHeader="bg-slate-600 dark:bg-slate-800"
+      />
+      <div className="hola flex flex-col gap-8 pb-10 w-full h-fit">
         <header className="flex justify-between items-center flex-grow mx-3 pb-5 border-b border-gray-300 dark:border-gray-500">
           <Select
             placeholder="Mostrar..."
@@ -86,8 +95,9 @@ export const DashBoard = () => {
           </tbody>
         </table>
       </div>
-      {/* <EditRow /> */}
-      <UploadTable />
+
+      <UploadTable modalRef={current_modal} load={add} />
+      <EditRow modalRef={current_modal} load={add} />
       {/* <ViewMoreTables /> */}
     </section>
   );
