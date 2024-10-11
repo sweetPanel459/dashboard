@@ -51,21 +51,17 @@ const exampleData = [
  * */
 
 export const DashBoard = () => {
-  const modalRef = useRef(null);
-  const { stateModal, openModal, closeModal } = useModalToggle(modalRef);
-
-  useEffect(() => { }, [modalRef]);
+  const { current_modal, add } = useModalToggle();
+  const a = () => {
+    console.log("ostia");
+  };
 
   return (
-    <section
-      ref={modalRef}
-      className="flex flex-col gap-10 w-screen h-screen px-52 overflow-y-auto bg-gray-100 dark:bg-gray-700 "
-    >
+    <section className="flex flex-col gap-10 w-screen h-screen px-52 overflow-y-auto bg-gray-100 dark:bg-gray-700 ">
       <DashboardHeader
-        clickOpenModal={openModal}
+        // clickOpenModal={addElement}
         styleHeader="bg-slate-600 dark:bg-slate-800"
       />
-
       <div className="hola flex flex-col gap-8 pb-10 w-full h-fit">
         <header className="flex justify-between items-center flex-grow mx-3 pb-5 border-b border-gray-300 dark:border-gray-500">
           <Select
@@ -99,9 +95,10 @@ export const DashBoard = () => {
           </tbody>
         </table>
       </div>
-      <EditRow />
-      <UploadTable close={closeModal} />
-      <ViewMoreTables />
+
+      <UploadTable modalRef={current_modal} load={add} />
+      <EditRow modalRef={current_modal} load={add} />
+      {/* <ViewMoreTables /> */}
     </section>
   );
 };

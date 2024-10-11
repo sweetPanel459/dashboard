@@ -1,12 +1,18 @@
+import { useEffect } from "react";
+
 import { Input } from "../common/input";
 
 import { ModalHeader } from "./modalHeader";
 
-export const EditRow = () => {
+export const EditRow = ({ modalRef, load }) => {
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <div
-      id="modal"
-      className="absolute inset-0 hidden items-center justify-center bg-transparent backdrop-blur"
+      ref={modalRef}
+      className="edit-row absolute inset-0 hidden items-center justify-center bg-transparent backdrop-blur"
     >
       <section className="modal flex flex-col w-3/4 h-2/6 p-3 rounded-lg border border-gray-500 bg-white">
         <ModalHeader text="Editar fila de la tabla" />

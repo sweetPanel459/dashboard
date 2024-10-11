@@ -36,7 +36,7 @@ export const DashboardHeader = ({ styleHeader, clickOpenModal }) => {
             text="Clasificaciones"
             styleIcon="text-xl"
             styleButton="items-center gap-2 font-roboto font-medium text-white text-xl"
-            click={() => clickOpenModal("modal-no")}
+            click={clickOpenModal}
           />
           <Button
             icon={!darkMode ? <FaSun /> : <FaMoon />}
