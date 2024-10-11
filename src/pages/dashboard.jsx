@@ -1,6 +1,5 @@
-import { useRef, useEffect } from "react";
-
 import { Input } from "../components/common/input";
+import { Button } from "../components/common/button";
 import { Select } from "../components/common/select";
 
 import { DashboardHeader } from "../containers/dashboardHeader";
@@ -12,6 +11,7 @@ import { EditRow } from "../components/modals/editRow";
 import { ViewMoreTables } from "../components/modals/viewMoreTables";
 
 import { FaSearch } from "react-icons/fa";
+import { IoMdCloudUpload } from "react-icons/io";
 
 import { useModalToggle } from "../hooks/useModalToggle";
 
@@ -51,15 +51,12 @@ const exampleData = [
  * */
 
 export const DashBoard = () => {
-  const { current_modal, add } = useModalToggle();
-  const a = () => {
-    console.log("ostia");
-  };
+  const { registerModalRef, openModal, closeModal } = useModalToggle();
 
   return (
     <section className="flex flex-col gap-10 w-screen h-screen px-52 overflow-y-auto bg-gray-100 dark:bg-gray-700 ">
       <DashboardHeader
-        // clickOpenModal={addElement}
+        clickOpenModal={() => openModal("view-model")}
         styleHeader="bg-slate-600 dark:bg-slate-800"
       />
       <div className="hola flex flex-col gap-8 pb-10 w-full h-fit">
@@ -69,13 +66,20 @@ export const DashBoard = () => {
             styleButton="text-2xl text-slate-500 dark:text-white"
             styleContent="w-32 px-2 p-1 border border-gray-500 bg-white dark:bg-slate-600 dark:text-white"
           />
-          <Input
-            button={<FaSearch />}
-            placeholder="Buscar..."
-            styleInput="bg-transparent dark:text-white"
-            styleButton="flex justify-center items-center order-2 h-full w-10 rounded bg-slate-500 text-white"
-            styleContainer="flex items-center gap-2 h-full p-1 pl-2 rounded border border-gray-500 bg-white dark:bg-slate-600 "
-          />
+          <div className="flex gap-2 h-full">
+            <Input
+              button={<FaSearch />}
+              placeholder="Buscar..."
+              styleInput="bg-transparent dark:text-white"
+              styleButton="flex justify-center items-center order-2 h-full w-10 rounded bg-slate-500 text-white"
+              styleContainer="flex items-center gap-2 h-full p-1 pl-2 rounded border border-gray-500 bg-white dark:bg-slate-600 "
+            />
+            <Button
+              icon={<IoMdCloudUpload />}
+              styleButton="flex items-center h-full px-2 rounded-lg text-3xl text-white bg-slate-500"
+              click={() => openModal("upload-modal")}
+            />
+          </div>
         </header>
 
         <table className="flex flex-col content-start flex-grow w-full p-3 rounded bg-white dark:bg-transparent">
@@ -90,15 +94,24 @@ export const DashBoard = () => {
                 cellValues={index}
                 style="border-gray-300 dark:border-gray-500"
                 styleColm="text-gray-600 dark:text-gray-200"
+                click={() => openModal("edit-modal")}
               />
             ))}
           </tbody>
         </table>
       </div>
-
-      <UploadTable modalRef={current_modal} load={add} />
-      <EditRow modalRef={current_modal} load={add} />
-      {/* <ViewMoreTables /> */}
+      <EditRow
+        close={() => closeModal("edit-modal")}
+        modalRef={(node) => registerModalRef("edit-modal", node)}
+      />
+      <UploadTable
+        close={() => closeModal("upload-modal")}
+        modalRef={(node) => registerModalRef("upload-modal", node)}
+      />
+      <ViewMoreTables
+        close={() => closeModal("view-model")}
+        modalRef={(node) => registerModalRef("view-model", node)}
+      />
     </section>
   );
 };
