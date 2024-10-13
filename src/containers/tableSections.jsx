@@ -19,12 +19,11 @@ const optionHeadExample = [
   { text: "Posicion final", click: "s" },
 ];
 
-export const TableHeader = ({ styleButton }) => (
+export const TableHeader = ({ styleButton, isActiveEditRow }) => (
   <tr className="flex w-full gap-2 py-2">
     {optionHeadExample.map((index, keys) => (
-      <td className={`w-full ${styleButton}`}>
+      <td key={keys} className={`w-full ${styleButton}`}>
         <Button
-          key={keys}
           text={index.text}
           icon={index.click && <FaSortAmountDown />}
           styleIcon="order-2 relative bottom-0.5 text-xl"
@@ -32,25 +31,28 @@ export const TableHeader = ({ styleButton }) => (
         />
       </td>
     ))}
-    <EditRow state={false} />
+    {isActiveEditRow && <EditRow key={0} state={false} />}
   </tr>
 );
 
-export const TableRow = ({ style, styleColm, cellValues, click }) => (
-  <tr className={`${style} flex items-center w-full gap-2 py-3 border-b`}>
+export const TableRow = ({
+  style,
+  styleColm,
+  cellValues,
+  isActiveEditRow,
+  click,
+}) => (
+  <tr className={`${style} flex items-center w-full`}>
     {cellValues.map((index, key) => (
-      <td
-        key={key}
-        className={`${styleColm} relative right-1 text-center  w-full font-grotesk`}
-      >
+      <td key={key} className={`${styleColm} text-center font-grotesk`}>
         {index}
       </td>
     ))}
-    <EditRow clickEdit={click} />
+    {isActiveEditRow && <EditRow key={1} clickEdit={click} />}
   </tr>
 );
 
-const EditRow = ({ state = true, clickEdit }) => (
+const EditRow = ({ isActive, state = true, clickEdit }) => (
   <td className="flex items-center justify-center gap-2 h-7 min-w-20">
     {state ? (
       <>

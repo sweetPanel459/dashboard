@@ -5,9 +5,8 @@ import { Select } from "../components/common/select";
 import { DashboardHeader } from "../containers/dashboardHeader";
 import { TableHeader, TableRow } from "../containers/tableSections";
 
-import { UploadTable } from "../components/modals/uploadTable";
-
 import { EditRow } from "../components/modals/editRow";
+import { UploadTable } from "../components/modals/uploadTable";
 import { ViewMoreTables } from "../components/modals/viewMoreTables";
 
 import { FaSearch } from "react-icons/fa";
@@ -40,9 +39,8 @@ const exampleData = [
   ["DINA TEHERAN", 19, 18, 16, 16, 73, 19],
   ["MARIA FERNANDA COL", 18, 19, 21, 18, 76, 21],
 ];
+
 /*TODO:
- * - create modal to upload tables - in procces
- * - create the custom hook in charge of the state of the modals (open/close)
  * - create the logic to upload xlsx
  * - create filter logic to accept only tables
  * - make http requests to endpoints
@@ -92,8 +90,8 @@ export const DashBoard = () => {
               <TableRow
                 key={key}
                 cellValues={index}
-                style="border-gray-300 dark:border-gray-500"
-                styleColm="text-gray-600 dark:text-gray-200"
+                style="gap-2 py-3 border-b border-gray-300 dark:border-gray-500"
+                styleColm="w-full text-gray-600 dark:text-gray-200"
                 click={() => openModal("edit-modal")}
               />
             ))}

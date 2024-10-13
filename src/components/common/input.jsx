@@ -37,23 +37,3 @@ export const Input = ({
     </div>
   );
 };
-
-Input.propTypes = {
-  label: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string,
-  className: PropTypes.string,
-  required: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
-
-Input.defaultProps = {
-  label: "",
-  placeholder: "",
-  name: "",
-  className: "",
-  required: false,
-  disabled: false,
-};
