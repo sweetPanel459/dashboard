@@ -1,3 +1,4 @@
+import { read, utils } from "xlsx";
 import { useState, useEffect } from "react";
 
 const ReadFileAsDataUrl = (file) => {
@@ -16,7 +17,7 @@ const ReadFileAsDataUrl = (file) => {
   });
 };
 
-const useUploadFile = () => {
+export const useUploadFile = () => {
   const [workSheets, setWorkSheets] = useState({});
   const [sheetNames, setSheetNames] = useState([]);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
@@ -54,15 +55,15 @@ const useUploadFile = () => {
     setWorkSheets(worksheet);
   };
 
-  const setCurrentSheet = (e) => {
+  const setCurrentSheet = (e, index) => {
     e.preventDefault();
-    setCurrentSheet();
+    setCurrentWorkSheet(index);
   };
 
   return {
     uploadFileHandler,
-    setCurrentWorkSheet,
     currentWorkSheet,
+    setCurrentSheet,
     workSheets,
     sheetNames,
   };
