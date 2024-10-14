@@ -90,8 +90,8 @@ export const DashBoard = () => {
               <TableRow
                 key={key}
                 cellValues={index}
-                style="gap-2 py-3 border-b border-gray-300 dark:border-gray-500"
                 styleColm="w-full text-gray-600 dark:text-gray-200"
+                style="flex items-center gap-2 w-full py-3 border-b border-gray-300 dark:border-gray-500"
                 click={() => openModal("edit-modal")}
               />
             ))}

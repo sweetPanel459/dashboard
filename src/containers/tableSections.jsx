@@ -42,7 +42,7 @@ export const TableRow = ({
   isActiveEditRow,
   click,
 }) => (
-  <tr className={`${style} flex items-center w-full`}>
+  <tr className={style}>
     {cellValues.map((index, key) => (
       <td key={key} className={`${styleColm} text-center font-grotesk`}>
         {index}
@@ -52,7 +52,7 @@ export const TableRow = ({
   </tr>
 );
 
-const EditRow = ({ isActive, state = true, clickEdit }) => (
+const EditRow = ({ state = true, clickEdit }) => (
   <td className="flex items-center justify-center gap-2 h-7 min-w-20">
     {state ? (
       <>
