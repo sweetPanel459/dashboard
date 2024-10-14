@@ -25,12 +25,15 @@ const ReadFileAsDataUrl = (file) => {
   });
 };
 
+// TODO:
+//   - refactoring the code, modularizing it
+
 export const UploadTable = ({ modalRef, close }) => {
   const [workBook, setWorkBook] = useState([]);
   const [workSheets, setWorkSheets] = useState(undefined);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
 
-  useEffect(() => { }, [workSheets, workBook]);
+  useEffect(() => {}, [workSheets, workBook]);
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
@@ -40,6 +43,7 @@ export const UploadTable = ({ modalRef, close }) => {
 
     const worksheet = {};
 
+    console.log(workbook, "befor foreach");
     workbook.SheetNames.forEach((sheetName) => {
       const sheet = workbook.Sheets[sheetName];
       const range = utils.decode_range(sheet["!ref"]); // Obtener el rango completo del excel
@@ -57,9 +61,10 @@ export const UploadTable = ({ modalRef, close }) => {
       }
 
       worksheet[sheetName] = sheetData;
-
       setWorkBook((prev) => [...prev, sheetName]);
     });
+
+    console.log(workbook, "after foreach");
     setWorkSheets(worksheet);
   };
 
@@ -71,7 +76,7 @@ export const UploadTable = ({ modalRef, close }) => {
       <section className="flex flex-col gap-5 w-4/5 h-4/5 p-5 rounded-lg border border-gray-500 bg-white">
         <ModalHeader text="Subir tabla" click={close} />
         <form className="flex flex-col flex-grow gap-5 w-full overflow-auto">
-          <section className="flex  gap-5 w-full h-20">
+          <section className="flex gap-5 w-full min-h-20">
             <Input
               id="upload-file"
               type="file"
@@ -99,7 +104,7 @@ export const UploadTable = ({ modalRef, close }) => {
                   <TableRow
                     key={key}
                     style="flex gap-2 w-fit"
-                    styleColm="flex items-center justify-center min-w-52 h-10 overflow-hidden bg-white"
+                    styleColm="flex items-center justify-center min-w-60 max-w-60 h-14 overflow-hidden text-lg bg-white"
                     cellValues={index}
                   />
                 ))}

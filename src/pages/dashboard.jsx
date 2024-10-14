@@ -41,7 +41,6 @@ const exampleData = [
 ];
 
 /*TODO:
- * - create the logic to upload xlsx
  * - create filter logic to accept only tables
  * - make http requests to endpoints
  * - bind components to http requests
