@@ -8,6 +8,7 @@ import { TableRow } from "../../containers/tableSections";
 import { ModalHeader } from "./modalHeader";
 import { FaFileUpload } from "react-icons/fa";
 
+import { useSelector } from "../../hooks/useSelector";
 import { useUploadFile } from "../../hooks/useUploadFile";
 
 export const UploadTable = ({ modalRef, close }) => {
@@ -19,6 +20,8 @@ export const UploadTable = ({ modalRef, close }) => {
     sheetNames,
     workSheets,
   } = useUploadFile();
+
+  const { fn, reg } = useSelector();
 
   return (
     <div
@@ -49,17 +52,33 @@ export const UploadTable = ({ modalRef, close }) => {
             />
           </section>
 
+          {/* NOTE:
+              -- get relative position of selector to its parent
+          */}
+
           <section className="flex flex-col flex-grow gap-2 overflow-auto">
-            <table className="flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200">
-              {workSheets !== undefined &&
-                workSheets[currentWorkSheet]?.map((index, key) => (
-                  <TableRow
-                    key={key}
-                    style="flex gap-2 w-fit"
-                    styleColm="flex items-center justify-center min-w-60 max-w-60 h-8 overflow-hidden text-lg bg-white"
-                    cellValues={index}
-                  />
-                ))}
+            <table
+              tabIndex={0}
+              onKeyDown={fn.handlerSelectorSize}
+              className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
+            >
+              {Object.keys(workSheets).length != 0 &&
+                currentWorkSheet != undefined && (
+                  <div
+                    ref={reg.registerSelectorRef}
+                    className="absolute inset-0 w-full h-full border-2 bg-opacity-60 bg-blue-400 border-blue-600 "
+                  ></div>
+                )}
+
+              {workSheets[currentWorkSheet]?.map((index, key) => (
+                <TableRow
+                  key={key}
+                  style="flex gap-2 w-fit"
+                  styleColm="flex items-center justify-center min-w-60 max-w-60 h-8 overflow-hidden text-lg bg-white"
+                  boxRef={(node) => reg.registerTableBoxesRef(node)}
+                  cellValues={index}
+                />
+              ))}
             </table>
             <div className="flex items-center w-full min-h-16">
               {sheetNames.map((index, key) => (

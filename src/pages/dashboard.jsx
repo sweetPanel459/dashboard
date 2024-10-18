@@ -42,9 +42,7 @@ const exampleData = [
 
 /*TODO:
  * - create filter logic to accept only tables
- * - make http requests to endpoints
- * - bind components to http requests
- * - create filter logic on tables
+ * - make http requests to endpoints bind components to http requests create filter logic on tables
  * */
 
 export const DashBoard = () => {
@@ -79,7 +77,7 @@ export const DashBoard = () => {
           </div>
         </header>
 
-        <table className="flex flex-col content-start flex-grow w-full p-3 rounded bg-white dark:bg-transparent">
+        <table className=" flex flex-col content-start flex-grow w-full p-3 rounded bg-white dark:bg-transparent">
           <thead className="w-full h-fit pb-2 border-b-2 border-gray-500">
             <TableHeader styleButton="text-salte-400 text-gray-700 dark:text-white" />
           </thead>
