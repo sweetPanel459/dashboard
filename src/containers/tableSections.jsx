@@ -40,11 +40,16 @@ export const TableRow = ({
   styleColm,
   cellValues,
   isActiveEditRow,
+  boxRef,
   click,
 }) => (
   <tr className={style}>
     {cellValues.map((index, key) => (
-      <td key={key} className={`${styleColm} text-center font-grotesk`}>
+      <td
+        ref={boxRef}
+        key={key}
+        className={`${styleColm} text-center font-grotesk`}
+      >
         {index}
       </td>
     ))}
