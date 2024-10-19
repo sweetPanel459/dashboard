@@ -12,22 +12,26 @@ import { useState, useEffect, useRef, useCallback } from "react";
 export const useSelector = () => {
   const [collidingBoxes, setCollidingBoxes] = useState([]);
   const [boxesPositions, setBoxesPositions] = useState([]);
-  const [selectorSize, setSelectorSize] = useState(undefined);
+  const [selectorSize, setSelectorSize] = useState({});
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  useEffect(() => {}, [boxesRef, selectorRef]);
+  useEffect(() => { }, [boxesRef, selectorRef, selectorSize]);
 
-  const handlerSelectorSize = () => {};
+  const handlerSelectorSize = () => {
+    if (selectorRef.current == undefined) return;
 
-  const handlerBoxesPositions = () => {};
+    const { x, y, width, height } = selectorRef.current.getBoundingClientRect();
+    setSelectorSize({ x, y, width, height });
+  };
 
-  const handlerColligindboxes = () => {};
+  const handlerBoxesPositions = () => { };
+
+  const handlerColligindboxes = () => { };
 
   const registerSelectorRef = useCallback((selectorId) => {
     selectorRef.current = selectorId;
   });
-
   const registerTableBoxesRef = useCallback((boxId, boxPosition) => {
     if (boxPosition) boxesRef.current[boxId] = boxPosition;
   });

@@ -26,7 +26,7 @@ export const UploadTable = ({ modalRef, close }) => {
   return (
     <div
       ref={modalRef}
-      className="uploadTable absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
+      className=" absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
     >
       <section className="flex flex-col gap-5 w-full h-full  p-5 rounded-lg border border-gray-500 bg-white">
         <ModalHeader text="Subir tabla" click={close} />
