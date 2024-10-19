@@ -12,13 +12,23 @@ import { useState, useEffect, useRef, useCallback } from "react";
 export const useSelector = () => {
   const [collidingBoxes, setCollidingBoxes] = useState([]);
   const [boxesPositions, setBoxesPositions] = useState([]);
-  const [selectorSize, setSelectorSize] = useState(undefined);
-  const selectorRef = useRef(undefined);
+  const [selectorSize, setSelectorSize] = useState({});
+  const selectorRef = useRef(null);
   const boxesRef = useRef([]);
 
-  useEffect(() => {}, [boxesRef, selectorRef]);
+  useEffect(() => {}, [boxesRef, selectorRef, selectorSize]);
 
-  const handlerSelectorSize = () => {};
+  const handlerSelectorSize = () => {
+    if (selectorRef.current == null) return;
+    const node = selectorRef.current.getBoundingClientRect();
+
+    const x = Math.round(node.x);
+    const y = Math.round(node.y);
+    const width = Math.round(node.width);
+    const height = Math.round(node.height);
+
+    setSelectorSize({ x, y, width, height });
+  };
 
   const handlerBoxesPositions = () => {};
 
@@ -28,10 +38,14 @@ export const useSelector = () => {
     selectorRef.current = selectorId;
   });
 
-  const registerTableBoxesRef = useCallback((boxId, boxPosition) => {
-    if (boxPosition) boxesRef.current[boxId] = boxPosition;
+  const registerTableBoxesRef = useCallback((node) => {
+    const valueNode = node.innerText;
+    const { x, y, width, height } = node.getBoundingClientRect();
+
+    console.log(x, y, width, height, valueNode);
+
+    // boxesRef.current = [...boxesRef.current, node];
   });
-  console.log(boxesRef);
 
   return {
     reg: { registerTableBoxesRef, registerSelectorRef },
