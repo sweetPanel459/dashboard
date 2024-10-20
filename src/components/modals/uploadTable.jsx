@@ -66,7 +66,7 @@ export const UploadTable = ({ modalRef, close }) => {
                 currentWorkSheet != undefined && (
                   <div
                     ref={reg.registerSelectorRef}
-                    className="absolute inset-0 w-full h-full border-2 bg-opacity-60 bg-blue-400 border-blue-600 "
+                    className="absolute bottom-0 w-1/2 h-1/2 border-2 bg-opacity-60 bg-blue-400 border-blue-600 "
                   ></div>
                 )}
 
