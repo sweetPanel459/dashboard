@@ -9,42 +9,46 @@ import { useState, useEffect, useRef, useCallback } from "react";
  *
  * */
 
+const getElementsDimensions = (node) => {
+  const { x, y, width, height } = node.getBoundingClientRect();
+
+  return {
+    x: Math.round(x),
+    y: Math.round(y),
+    width: Math.round(width),
+    height: Math.round(height),
+  };
+};
+
 export const useSelector = () => {
   const [collidingBoxes, setCollidingBoxes] = useState([]);
-  const [boxesPositions, setBoxesPositions] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
-  const selectorRef = useRef(null);
+  const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  useEffect(() => {}, [boxesRef, selectorRef, selectorSize]);
+  useEffect(() => {}, [boxesRef, selectorRef]);
 
-  const handlerSelectorSize = () => {
-    if (selectorRef.current == null) return;
-    const node = selectorRef.current.getBoundingClientRect();
-
-    const x = Math.round(node.x);
-    const y = Math.round(node.y);
-    const width = Math.round(node.width);
-    const height = Math.round(node.height);
-
-    setSelectorSize({ x, y, width, height });
-  };
+  const handlerSelectorSize = () => {};
 
   const handlerBoxesPositions = () => {};
 
   const handlerColligindboxes = () => {};
 
-  const registerSelectorRef = useCallback((selectorId) => {
-    selectorRef.current = selectorId;
+  const registerSelectorRef = useCallback((selectorNode) => {
+    if (selectorNode == null) return;
+
+    const { x, y, width, height } = getElementsDimensions(selectorNode);
+
+    selectorRef.current = { x, y, width, height };
   });
 
-  const registerTableBoxesRef = useCallback((node) => {
-    const valueNode = node.innerText;
-    const { x, y, width, height } = node.getBoundingClientRect();
+  const registerTableBoxesRef = useCallback((boxNode) => {
+    if (boxNode == null) return;
 
-    console.log(x, y, width, height, valueNode);
+    const { x, y, width, height } = getElementsDimensions(boxNode);
+    const Value = boxNode.innerText;
 
-    // boxesRef.current = [...boxesRef.current, node];
+    boxesRef.current = [...boxesRef.current, { x, y, width, height, Value }];
   });
 
   return {
