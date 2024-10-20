@@ -28,7 +28,16 @@ export const useSelector = () => {
 
   useEffect(() => {}, [boxesRef, selectorRef]);
 
-  const handlerSelectorSize = () => {};
+  const handlerSelectorSize = () => {
+    const selector = selectorRef.current;
+    const boxes = boxesRef.current;
+
+    for (let i = 0; i < boxes.length; index++) {
+      //  NOTE :
+      //   - aqui va a ir la logica si el selector hace colicion con alguna de las dimenciones de las cajas
+      //
+    }
+  };
 
   const handlerBoxesPositions = () => {};
 
