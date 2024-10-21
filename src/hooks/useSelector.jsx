@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { TableHeader } from "../containers/tableSections";
 
 const getElementsDimensions = (node) => {
   const { top, right, bottom, left, x, y, width, height } =
@@ -27,6 +28,7 @@ export const useSelector = () => {
   const handlerSelectorSize = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
+    const table = [];
 
     for (let i = 0; i < boxes.length; i++) {
       const box = boxes[i];
@@ -36,37 +38,39 @@ export const useSelector = () => {
         box.top <= selector.bottom &&
         box.bottom >= selector.top
       ) {
-        console.log(`${box.value}`);
+        setCollidingBoxes((prev) => [...prev, box]);
       }
     }
   };
 
-  const handlerColligindboxes = () => { };
+  const handlerColligindboxes = () => {
+    // NOTE:
+    // - mejor mete las casillas colicionadas en el state
+    // - ahora ya puedes crear una funcion que se encarge de hacer la tabla
+  };
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
 
-    const { top, right, bottom, left, x, y, width, height } =
-      getElementsDimensions(selectorNode);
+    const { top, right, bottom, left } = getElementsDimensions(selectorNode);
 
-    selectorRef.current = { top, right, bottom, left, x, y, width, height };
+    selectorRef.current = { top, right, bottom, left };
   });
 
-  const registerTableBoxesRef = useCallback((boxNode) => {
+  const registerTableBoxesRef = useCallback((boxNode, rowIndex) => {
     if (boxNode == null) return;
 
-    const { top, right, bottom, left, x, y, width, height } =
-      getElementsDimensions(boxNode);
+    const { top, right, bottom, left } = getElementsDimensions(boxNode);
     const value = boxNode.innerText;
 
     boxesRef.current = [
       ...boxesRef.current,
-      { top, right, bottom, left, x, y, width, height, value },
+      { top, right, bottom, left, value, rowIndex },
     ];
   });
 
   return {
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerBoxesPositions, handlerColligindboxes },
+    fn: { handlerSelectorSize, handlerColligindboxes },
   };
 };
