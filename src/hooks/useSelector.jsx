@@ -23,12 +23,12 @@ export const useSelector = () => {
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  useEffect(() => { }, [boxesRef, selectorRef]);
+  useEffect(() => { }, [boxesRef, selectorRef, collidingBoxes]);
 
   const handlerSelectorSize = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
-    const table = [];
+    const collidingBoxes = [];
 
     for (let i = 0; i < boxes.length; i++) {
       const box = boxes[i];
@@ -38,15 +38,28 @@ export const useSelector = () => {
         box.top <= selector.bottom &&
         box.bottom >= selector.top
       ) {
-        setCollidingBoxes((prev) => [...prev, box]);
+        console.log(
+          "aqui va la logica para agrgar las casillas obtenidas al state",
+        );
       }
     }
+    handlerTableCreator();
   };
 
-  const handlerColligindboxes = () => {
+  const handlerTableCreator = () => {
+    console.log(collidingBoxes);
+
     // NOTE:
     // - mejor mete las casillas colicionadas en el state
     // - ahora ya puedes crear una funcion que se encarge de hacer la tabla
+    // - tomorrow cambias los nombre que no tienen sentido para su contenido
+    // - antes verfica que si se guardaron bien las casillas
+    // - imprime cada casilla
+    // - la idea solo las colicionads
+    // - porque se crea un bucle infinito
+    // - al parecer hay tantas ya que la funcion se llama cada vez que hay una pulsacion
+    // - ya pero, la primra no reincia el set
+    // - podrias intentar con un array y guardar los datos obetnidos ahi, para ver si no se acumulan
   };
 
   const registerSelectorRef = useCallback((selectorNode) => {
