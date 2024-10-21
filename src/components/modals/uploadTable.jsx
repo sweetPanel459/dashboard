@@ -11,6 +11,8 @@ import { FaFileUpload } from "react-icons/fa";
 import { useSelector } from "../../hooks/useSelector";
 import { useUploadFile } from "../../hooks/useUploadFile";
 
+import "../../styles/x.css";
+
 export const UploadTable = ({ modalRef, close }) => {
   const {
     deleteCurrentSheetNames,
@@ -66,7 +68,7 @@ export const UploadTable = ({ modalRef, close }) => {
                 currentWorkSheet != undefined && (
                   <div
                     ref={reg.registerSelectorRef}
-                    className="absolute bottom-0 w-1/2 h-1/2 border-2 bg-opacity-60 bg-blue-400 border-blue-600 "
+                    className="absolute left-2 top-12 w-4/5 h-4/5 border-2 bg-opacity-60 bg-blue-400 border-blue-600 "
                   ></div>
                 )}
 
@@ -74,7 +76,7 @@ export const UploadTable = ({ modalRef, close }) => {
                 <TableRow
                   key={key}
                   style="flex gap-2 w-fit"
-                  styleColm="flex items-center justify-center min-w-60 max-w-60 h-8 overflow-hidden text-lg bg-white"
+                  styleColm="flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
                   boxRef={(node) => reg.registerTableBoxesRef(node)}
                   cellValues={index}
                 />

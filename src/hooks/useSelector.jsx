@@ -1,22 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-/*  NOTE::
- * - The selector function size will save the current size in the useRef
- * - The handlerposition function will evaluate whether the size or position of the selector is equal to the boxes
- * - Colliding Boxes will be responsible for storing colliding boxes within an array of sub-arrays, called box positions.
- *
- *  TODO :
- *
- * */
-
 const getElementsDimensions = (node) => {
-  const { x, y, width, height } = node.getBoundingClientRect();
+  const { top, right, bottom, left, x, y, width, height } =
+    node.getBoundingClientRect();
 
   return {
-    x: Math.round(x),
-    y: Math.round(y),
+    top: Math.round(top),
+    right: Math.round(right),
+    bottom: Math.round(bottom),
+    left: Math.round(left),
     width: Math.round(width),
     height: Math.round(height),
+    x: Math.round(x),
+    y: Math.round(y),
   };
 };
 
@@ -26,38 +22,47 @@ export const useSelector = () => {
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  useEffect(() => {}, [boxesRef, selectorRef]);
+  useEffect(() => { }, [boxesRef, selectorRef]);
 
   const handlerSelectorSize = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
 
-    for (let i = 0; i < boxes.length; index++) {
-      //  NOTE :
-      //   - aqui va a ir la logica si el selector hace colicion con alguna de las dimenciones de las cajas
-      //
+    for (let i = 0; i < boxes.length; i++) {
+      const box = boxes[i];
+      if (
+        box.left <= selector.right &&
+        box.right >= selector.left &&
+        box.top <= selector.bottom &&
+        box.bottom >= selector.top
+      ) {
+        console.log(`${box.value}`);
+      }
     }
   };
 
-  const handlerBoxesPositions = () => {};
-
-  const handlerColligindboxes = () => {};
+  const handlerColligindboxes = () => { };
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
 
-    const { x, y, width, height } = getElementsDimensions(selectorNode);
+    const { top, right, bottom, left, x, y, width, height } =
+      getElementsDimensions(selectorNode);
 
-    selectorRef.current = { x, y, width, height };
+    selectorRef.current = { top, right, bottom, left, x, y, width, height };
   });
 
   const registerTableBoxesRef = useCallback((boxNode) => {
     if (boxNode == null) return;
 
-    const { x, y, width, height } = getElementsDimensions(boxNode);
-    const Value = boxNode.innerText;
+    const { top, right, bottom, left, x, y, width, height } =
+      getElementsDimensions(boxNode);
+    const value = boxNode.innerText;
 
-    boxesRef.current = [...boxesRef.current, { x, y, width, height, Value }];
+    boxesRef.current = [
+      ...boxesRef.current,
+      { top, right, bottom, left, x, y, width, height, value },
+    ];
   });
 
   return {
