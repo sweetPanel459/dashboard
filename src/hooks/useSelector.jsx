@@ -44,6 +44,12 @@ export const useSelector = () => {
     setCollidingBoxes(currentCollidingBoxes);
   };
 
+  //   TODO:
+  //   -make the table be created with its respective rows and columns
+  //   -change the function names so they are consistent with what they do
+  //   -make the keyboard and mouse be detected
+  //   -make the function so that the selector can be moved
+
   const handlerTableCreator = () => { };
 
   const registerSelectorRef = useCallback((selectorNode) => {
