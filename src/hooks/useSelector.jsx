@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { TableHeader } from "../containers/tableSections";
+import { useState, useRef, useCallback } from "react";
 
 const getElementsDimensions = (node) => {
   const { top, right, bottom, left, x, y, width, height } =
@@ -23,12 +22,12 @@ export const useSelector = () => {
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  useEffect(() => { }, [boxesRef, selectorRef, collidingBoxes]);
-
   const handlerSelectorSize = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
-    const collidingBoxes = [];
+
+    const currentCollidingBoxes = [];
+    boxesRef.current = [];
 
     for (let i = 0; i < boxes.length; i++) {
       const box = boxes[i];
@@ -38,33 +37,17 @@ export const useSelector = () => {
         box.top <= selector.bottom &&
         box.bottom >= selector.top
       ) {
-        console.log(
-          "aqui va la logica para agrgar las casillas obtenidas al state",
-        );
+        currentCollidingBoxes.push(box.value);
       }
     }
-    handlerTableCreator();
+
+    setCollidingBoxes(currentCollidingBoxes);
   };
 
-  const handlerTableCreator = () => {
-    console.log(collidingBoxes);
-
-    // NOTE:
-    // - mejor mete las casillas colicionadas en el state
-    // - ahora ya puedes crear una funcion que se encarge de hacer la tabla
-    // - tomorrow cambias los nombre que no tienen sentido para su contenido
-    // - antes verfica que si se guardaron bien las casillas
-    // - imprime cada casilla
-    // - la idea solo las colicionads
-    // - porque se crea un bucle infinito
-    // - al parecer hay tantas ya que la funcion se llama cada vez que hay una pulsacion
-    // - ya pero, la primra no reincia el set
-    // - podrias intentar con un array y guardar los datos obetnidos ahi, para ver si no se acumulan
-  };
+  const handlerTableCreator = () => { };
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
-
     const { top, right, bottom, left } = getElementsDimensions(selectorNode);
 
     selectorRef.current = { top, right, bottom, left };
@@ -72,7 +55,6 @@ export const useSelector = () => {
 
   const registerTableBoxesRef = useCallback((boxNode, rowIndex) => {
     if (boxNode == null) return;
-
     const { top, right, bottom, left } = getElementsDimensions(boxNode);
     const value = boxNode.innerText;
 
@@ -84,6 +66,7 @@ export const useSelector = () => {
 
   return {
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerColligindboxes },
+    fn: { handlerSelectorSize, handlerTableCreator },
+    values: { collidingBoxes, setCollidingBoxes },
   };
 };
