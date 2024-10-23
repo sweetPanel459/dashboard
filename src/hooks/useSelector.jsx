@@ -17,23 +17,25 @@ const getElementsDimensions = (node) => {
 };
 
 export const useSelector = () => {
-  const [collidingBoxes, setCollidingBoxes] = useState([]);
+  const [tableResult, setTableResult] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
   //   TODO:
-  //   -change the function names so they are consistent with what they do
   //   -make the keyboard and mouse be detected
   //   -make the function so that the selector can be moved
 
-  // mientrs le cambio el nombre == evalua y  obtiene las casillas obtenidas
+  // logic to be able to move the selector
   const handlerSelectorSize = () => {
+    handlerCollidingBoxes();
+  };
+
+  const handlerCollidingBoxes = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
 
     const currentCollidingBoxes = [];
-
     boxesRef.current = [];
 
     for (let i = 0; i < boxes.length; i++) {
@@ -50,10 +52,10 @@ export const useSelector = () => {
       }
     }
 
-    setCollidingBoxes(currentCollidingBoxes);
+    handlerTableCreator(currentCollidingBoxes);
   };
 
-  const handlerTableCreator = () => {
+  const handlerTableCreator = (collidingBoxes) => {
     const table = [];
 
     collidingBoxes.forEach((item) => {
@@ -61,6 +63,8 @@ export const useSelector = () => {
 
       table[item.index - 1].push(item.value);
     });
+
+    setTableResult(table);
   };
 
   const registerSelectorRef = useCallback((selectorNode) => {
@@ -83,8 +87,7 @@ export const useSelector = () => {
   });
 
   return {
+    fn: { handlerSelectorSize },
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerTableCreator },
-    values: { collidingBoxes, setCollidingBoxes },
   };
 };
