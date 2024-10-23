@@ -22,35 +22,46 @@ export const useSelector = () => {
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
+  //   TODO:
+  //   -change the function names so they are consistent with what they do
+  //   -make the keyboard and mouse be detected
+  //   -make the function so that the selector can be moved
+
+  // mientrs le cambio el nombre == evalua y  obtiene las casillas obtenidas
   const handlerSelectorSize = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
 
     const currentCollidingBoxes = [];
+
     boxesRef.current = [];
 
     for (let i = 0; i < boxes.length; i++) {
-      const box = boxes[i];
       if (
-        box.left <= selector.right &&
-        box.right >= selector.left &&
-        box.top <= selector.bottom &&
-        box.bottom >= selector.top
+        boxes[i].left <= selector.right &&
+        boxes[i].right >= selector.left &&
+        boxes[i].top <= selector.bottom &&
+        boxes[i].bottom >= selector.top
       ) {
-        currentCollidingBoxes.push(box.value);
+        const value = boxes[i].value;
+        const index = boxes[i].index;
+
+        currentCollidingBoxes.push({ value, index });
       }
     }
 
     setCollidingBoxes(currentCollidingBoxes);
   };
 
-  //   TODO:
-  //   -make the table be created with its respective rows and columns
-  //   -change the function names so they are consistent with what they do
-  //   -make the keyboard and mouse be detected
-  //   -make the function so that the selector can be moved
+  const handlerTableCreator = () => {
+    const table = [];
 
-  const handlerTableCreator = () => { };
+    collidingBoxes.forEach((item) => {
+      if (!table[item.index - 1]) table[item.index - 1] = [];
+
+      table[item.index - 1].push(item.value);
+    });
+  };
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
@@ -63,10 +74,11 @@ export const useSelector = () => {
     if (boxNode == null) return;
     const { top, right, bottom, left } = getElementsDimensions(boxNode);
     const value = boxNode.innerText;
+    const index = rowIndex + 1;
 
     boxesRef.current = [
       ...boxesRef.current,
-      { top, right, bottom, left, value, rowIndex },
+      { top, right, bottom, left, value, index },
     ];
   });
 
