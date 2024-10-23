@@ -1,32 +1,20 @@
-import { useState, useRef, useCallback } from "react";
-
-const getElementsDimensions = (node) => {
-  const { top, right, bottom, left, x, y, width, height } =
-    node.getBoundingClientRect();
-
-  return {
-    top: Math.round(top),
-    right: Math.round(right),
-    bottom: Math.round(bottom),
-    left: Math.round(left),
-    width: Math.round(width),
-    height: Math.round(height),
-    x: Math.round(x),
-    y: Math.round(y),
-  };
-};
+import { useState, useRef, useCallback, useEffect } from "react";
 
 export const useSelector = () => {
-  const [tableResult, setTableResult] = useState([]);
+  const [table, setTable] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
+  const [shiftPressed, setShiftPressed] = useState(false);
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  //   TODO:
-  //   -make the keyboard and mouse be detected
-  //   -make the function so that the selector can be moved
+  const handlerKeyDown = () => setShiftPressed(true);
+  const handlerkeyUp = () => setShiftPressed(false);
 
-  // logic to be able to move the selector
+  const handlerClikDown = (e) => {
+    if (!shiftPressed) return;
+    console.log("Hola");
+  };
+
   const handlerSelectorSize = () => {
     handlerCollidingBoxes();
   };
@@ -64,7 +52,7 @@ export const useSelector = () => {
       table[item.index - 1].push(item.value);
     });
 
-    setTableResult(table);
+    setTable(table);
   };
 
   const registerSelectorRef = useCallback((selectorNode) => {
@@ -87,7 +75,24 @@ export const useSelector = () => {
   });
 
   return {
-    fn: { handlerSelectorSize },
+    values: { table },
     reg: { registerTableBoxesRef, registerSelectorRef },
+    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerClikDown },
+  };
+};
+
+const getElementsDimensions = (node) => {
+  const { top, right, bottom, left, x, y, width, height } =
+    node.getBoundingClientRect();
+
+  return {
+    top: Math.round(top),
+    right: Math.round(right),
+    bottom: Math.round(bottom),
+    left: Math.round(left),
+    width: Math.round(width),
+    height: Math.round(height),
+    x: Math.round(x),
+    y: Math.round(y),
   };
 };
