@@ -4,16 +4,34 @@ export const useSelector = () => {
   const [table, setTable] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
   const [shiftPressed, setShiftPressed] = useState(false);
+
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  const handlerKeyDown = () => setShiftPressed(true);
-  const handlerkeyUp = () => setShiftPressed(false);
-
-  const handlerClikDown = (e) => {
-    if (!shiftPressed) return;
-    console.log("Hola");
+  const handlerKeyDown = (e) => {
+    if (e.key == "Shift") setShiftPressed(true);
   };
+
+  const handlerkeyUp = (e) => {
+    if (e.key == "Shift") setShiftPressed(false);
+  };
+
+  const handlerMouseMove = (e) => {
+    if (!shiftPressed) return;
+    console.log(e);
+  };
+
+  // NOTE :
+  //  - tienes dudas de las matematicas que necesitas implementar para la posicion del selector?
+  //  - necesito obtener la posicion relativa del mouse, con respecto a su contendor
+  //  - puedo llamar a la valariable selecotReft para con su classList style modificarlo
+  //  - quiza sea mejor directamente desde la funcion
+  //  - ahora, las matematicas, como haras para que quede estatico en el punto que se puso
+  //  - lo que he pensado es hacer unas restas
+  //  - restas de que
+  //  - no se
+  //  -
+  //
 
   const handlerSelectorSize = () => {
     handlerCollidingBoxes();
@@ -77,7 +95,7 @@ export const useSelector = () => {
   return {
     values: { table },
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerClikDown },
+    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerMouseMove },
   };
 };
 
