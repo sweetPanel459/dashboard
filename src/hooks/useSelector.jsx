@@ -18,7 +18,7 @@ export const useSelector = () => {
 
   const handlerMouseMove = (e) => {
     if (!shiftPressed) return;
-    console.log(e);
+    handlerMouseMove();
   };
 
   // NOTE :
@@ -29,7 +29,7 @@ export const useSelector = () => {
   //  - ahora, las matematicas, como haras para que quede estatico en el punto que se puso
   //  - lo que he pensado es hacer unas restas
   //  - restas de que
-  //  - no se
+  //  - obtengo el punto del mouse actual y ese sera el centro, como en paint
   //  -
   //
 
