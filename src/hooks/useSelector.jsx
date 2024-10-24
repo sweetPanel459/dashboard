@@ -1,39 +1,47 @@
-import { useState, useRef, useCallback } from "react";
-
-const getElementsDimensions = (node) => {
-  const { top, right, bottom, left, x, y, width, height } =
-    node.getBoundingClientRect();
-
-  return {
-    top: Math.round(top),
-    right: Math.round(right),
-    bottom: Math.round(bottom),
-    left: Math.round(left),
-    width: Math.round(width),
-    height: Math.round(height),
-    x: Math.round(x),
-    y: Math.round(y),
-  };
-};
+import { useState, useRef, useCallback, useEffect } from "react";
 
 export const useSelector = () => {
-  const [collidingBoxes, setCollidingBoxes] = useState([]);
+  const [table, setTable] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
+  const [shiftPressed, setShiftPressed] = useState(false);
+
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
 
-  //   TODO:
-  //   -change the function names so they are consistent with what they do
-  //   -make the keyboard and mouse be detected
-  //   -make the function so that the selector can be moved
+  const handlerKeyDown = (e) => {
+    if (e.key == "Shift") setShiftPressed(true);
+  };
 
-  // mientrs le cambio el nombre == evalua y  obtiene las casillas obtenidas
+  const handlerkeyUp = (e) => {
+    if (e.key == "Shift") setShiftPressed(false);
+  };
+
+  const handlerMouseMove = (e) => {
+    if (!shiftPressed) return;
+    console.log(e);
+  };
+
+  // NOTE :
+  //  - tienes dudas de las matematicas que necesitas implementar para la posicion del selector?
+  //  - necesito obtener la posicion relativa del mouse, con respecto a su contendor
+  //  - puedo llamar a la valariable selecotReft para con su classList style modificarlo
+  //  - quiza sea mejor directamente desde la funcion
+  //  - ahora, las matematicas, como haras para que quede estatico en el punto que se puso
+  //  - lo que he pensado es hacer unas restas
+  //  - restas de que
+  //  - no se
+  //  -
+  //
+
   const handlerSelectorSize = () => {
+    handlerCollidingBoxes();
+  };
+
+  const handlerCollidingBoxes = () => {
     const selector = selectorRef.current;
     const boxes = boxesRef.current;
 
     const currentCollidingBoxes = [];
-
     boxesRef.current = [];
 
     for (let i = 0; i < boxes.length; i++) {
@@ -50,10 +58,10 @@ export const useSelector = () => {
       }
     }
 
-    setCollidingBoxes(currentCollidingBoxes);
+    handlerTableCreator(currentCollidingBoxes);
   };
 
-  const handlerTableCreator = () => {
+  const handlerTableCreator = (collidingBoxes) => {
     const table = [];
 
     collidingBoxes.forEach((item) => {
@@ -61,6 +69,8 @@ export const useSelector = () => {
 
       table[item.index - 1].push(item.value);
     });
+
+    setTable(table);
   };
 
   const registerSelectorRef = useCallback((selectorNode) => {
@@ -83,8 +93,24 @@ export const useSelector = () => {
   });
 
   return {
+    values: { table },
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerTableCreator },
-    values: { collidingBoxes, setCollidingBoxes },
+    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerMouseMove },
+  };
+};
+
+const getElementsDimensions = (node) => {
+  const { top, right, bottom, left, x, y, width, height } =
+    node.getBoundingClientRect();
+
+  return {
+    top: Math.round(top),
+    right: Math.round(right),
+    bottom: Math.round(bottom),
+    left: Math.round(left),
+    width: Math.round(width),
+    height: Math.round(height),
+    x: Math.round(x),
+    y: Math.round(y),
   };
 };

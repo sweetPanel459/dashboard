@@ -61,7 +61,9 @@ export const UploadTable = ({ modalRef, close }) => {
           <section className="flex flex-col flex-grow gap-2 overflow-auto">
             <table
               tabIndex={0}
-              onKeyDown={fn.handlerSelectorSize}
+              onKeyUp={fn.handlerkeyUp}
+              onKeyDown={fn.handlerKeyDown}
+              onMouseMove={fn.handlerMouseMove}
               className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
             >
               {Object.keys(workSheets).length != 0 &&
