@@ -21,18 +21,6 @@ export const useSelector = () => {
     handlerMouseMove();
   };
 
-  // NOTE :
-  //  - tienes dudas de las matematicas que necesitas implementar para la posicion del selector?
-  //  - necesito obtener la posicion relativa del mouse, con respecto a su contendor
-  //  - puedo llamar a la valariable selecotReft para con su classList style modificarlo
-  //  - quiza sea mejor directamente desde la funcion
-  //  - ahora, las matematicas, como haras para que quede estatico en el punto que se puso
-  //  - lo que he pensado es hacer unas restas
-  //  - restas de que
-  //  - obtengo el punto del mouse actual y ese sera el centro, como en paint
-  //  -
-  //
-
   const handlerSelectorSize = () => {
     handlerCollidingBoxes();
   };
