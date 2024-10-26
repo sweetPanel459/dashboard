@@ -4,9 +4,21 @@ export const useSelector = () => {
   const [table, setTable] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
   const [shiftPressed, setShiftPressed] = useState(false);
+  const [clickPressed, setClickPressed] = useState(false);
+  const [currentClickPosition, setCurrentClickPosition] = useState({});
 
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
+
+  const handlerMouseDown = (e) => {
+    setClickPressed(true);
+    setCurrentClickPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handlerMouseUp = () => {
+    setClickPressed(false);
+    setCurrentClickPosition({});
+  };
 
   const handlerKeyDown = (e) => {
     if (e.key == "Shift") setShiftPressed(true);
@@ -17,24 +29,17 @@ export const useSelector = () => {
   };
 
   const handlerMouseMove = (e) => {
-    if (!shiftPressed) return;
-    console.log(e);
+    if (!shiftPressed || !clickPressed) return;
+    handlerSelectorSize();
   };
 
-  // NOTE :
-  //  - tienes dudas de las matematicas que necesitas implementar para la posicion del selector?
-  //  - necesito obtener la posicion relativa del mouse, con respecto a su contendor
-  //  - puedo llamar a la valariable selecotReft para con su classList style modificarlo
-  //  - quiza sea mejor directamente desde la funcion
-  //  - ahora, las matematicas, como haras para que quede estatico en el punto que se puso
-  //  - lo que he pensado es hacer unas restas
-  //  - restas de que
-  //  - no se
-  //  -
-  //
-
   const handlerSelectorSize = () => {
-    handlerCollidingBoxes();
+    const { top, right, bottom, left } =
+      selectorRef.current.getBoundingClientRect();
+    const { x, y } = currentClickPosition;
+
+    console.log(x, y);
+    // handlerCollidingBoxes();
   };
 
   const handlerCollidingBoxes = () => {
@@ -75,9 +80,7 @@ export const useSelector = () => {
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
-    const { top, right, bottom, left } = getElementsDimensions(selectorNode);
-
-    selectorRef.current = { top, right, bottom, left };
+    selectorRef.current = selectorNode;
   });
 
   const registerTableBoxesRef = useCallback((boxNode, rowIndex) => {
@@ -95,7 +98,14 @@ export const useSelector = () => {
   return {
     values: { table },
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerMouseMove },
+    fn: {
+      handlerSelectorSize,
+      handlerkeyUp,
+      handlerKeyDown,
+      handlerMouseUp,
+      handlerMouseDown,
+      handlerMouseMove,
+    },
   };
 };
 
