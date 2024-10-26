@@ -4,9 +4,21 @@ export const useSelector = () => {
   const [table, setTable] = useState([]);
   const [selectorSize, setSelectorSize] = useState({});
   const [shiftPressed, setShiftPressed] = useState(false);
+  const [clickPressed, setClickPressed] = useState(false);
+  const [currentClickPosition, setCurrentClickPosition] = useState({});
 
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
+
+  const handlerMouseDown = (e) => {
+    setClickPressed(true);
+    setCurrentClickPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  const handlerMouseUp = () => {
+    setClickPressed(false);
+    setCurrentClickPosition({});
+  };
 
   const handlerKeyDown = (e) => {
     if (e.key == "Shift") setShiftPressed(true);
@@ -17,12 +29,17 @@ export const useSelector = () => {
   };
 
   const handlerMouseMove = (e) => {
-    if (!shiftPressed) return;
-    handlerMouseMove();
+    if (!shiftPressed || !clickPressed) return;
+    handlerSelectorSize();
   };
 
   const handlerSelectorSize = () => {
-    handlerCollidingBoxes();
+    const { top, right, bottom, left } =
+      selectorRef.current.getBoundingClientRect();
+    const { x, y } = currentClickPosition;
+
+    console.log(x, y);
+    // handlerCollidingBoxes();
   };
 
   const handlerCollidingBoxes = () => {
@@ -63,9 +80,7 @@ export const useSelector = () => {
 
   const registerSelectorRef = useCallback((selectorNode) => {
     if (selectorNode == null) return;
-    const { top, right, bottom, left } = getElementsDimensions(selectorNode);
-
-    selectorRef.current = { top, right, bottom, left };
+    selectorRef.current = selectorNode;
   });
 
   const registerTableBoxesRef = useCallback((boxNode, rowIndex) => {
@@ -83,7 +98,14 @@ export const useSelector = () => {
   return {
     values: { table },
     reg: { registerTableBoxesRef, registerSelectorRef },
-    fn: { handlerSelectorSize, handlerkeyUp, handlerKeyDown, handlerMouseMove },
+    fn: {
+      handlerSelectorSize,
+      handlerkeyUp,
+      handlerKeyDown,
+      handlerMouseUp,
+      handlerMouseDown,
+      handlerMouseMove,
+    },
   };
 };
 
