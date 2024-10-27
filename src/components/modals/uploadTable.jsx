@@ -79,7 +79,7 @@ export const UploadTable = ({ modalRef, close }) => {
               {workSheets[currentWorkSheet]?.map((index, key) => (
                 <TableRow
                   key={key}
-                  style="select-none flex gap-2 w-fit"
+                  style="flex gap-2 w-fit"
                   styleColm="flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
                   boxRef={(node) => reg.registerTableBoxesRef(node, key)}
                   cellValues={index}

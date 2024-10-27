@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 
 export const useSelector = () => {
   const [table, setTable] = useState([]);
@@ -9,6 +9,19 @@ export const useSelector = () => {
 
   const selectorRef = useRef(undefined);
   const boxesRef = useRef([]);
+
+  // NOTE:
+  //  - el trabajo de un PROGRAMDOR es hacer la mejor soluciona a un problema en determinado contexto
+  //  - en vez de constantemente saber la posicion del selector, podria hacer la tabla con un selector falso
+  //  - dame ideas generales de la logica de este
+  //  - 1. al momento de oprimir shift y click encima de una casilla esta se pondra de azul
+  //  - 2. este se a;adira a un array, que dependiendo de su row id va a aplicarse en una fila u otra
+  //  - que eliminarias del sistema actual
+  //  - 1. podria eliminar el register de todos los casillas y en vez de eso, pongo un evento al padre que detecte que hijo estoy tocando
+  //  - 2. la logica de colicion del selector
+  //  - 3. el registro del selector
+  //  - porque no empiezad de cero el custom hook
+  //  - lo hare, igual tenemos git
 
   const handlerMouseDown = (e) => {
     setClickPressed(true);
@@ -28,17 +41,17 @@ export const useSelector = () => {
     if (e.key == "Shift") setShiftPressed(false);
   };
 
-  const handlerMouseMove = (e) => {
+  const handlerMouseMove = () => {
     if (!shiftPressed || !clickPressed) return;
     handlerSelectorSize();
   };
 
   const handlerSelectorSize = () => {
+    const selector = selectorRef.current;
+    const { x, y } = currentClickPosition;
     const { top, right, bottom, left } =
       selectorRef.current.getBoundingClientRect();
-    const { x, y } = currentClickPosition;
 
-    console.log(x, y);
     // handlerCollidingBoxes();
   };
 
