@@ -1,4 +1,3 @@
-import { Text } from "../components/common/texts";
 import { Button } from "../components/common/button";
 
 import {
@@ -41,11 +40,13 @@ export const TableRow = ({
   cellValues,
   isActiveEditRow,
   boxRef,
+  idRow,
   click,
 }) => (
   <tr className={style}>
     {cellValues.map((index, key) => (
       <td
+        id={[idRow, key]}
         ref={boxRef}
         key={key}
         className={`${styleColm} text-center font-grotesk`}
