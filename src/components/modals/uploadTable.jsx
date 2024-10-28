@@ -23,6 +23,8 @@ export const UploadTable = ({ modalRef, close }) => {
     workSheets,
   } = useUploadFile();
 
+  const { ref, handler } = useSelector(workSheets[currentWorkSheet]);
+
   return (
     <div
       ref={modalRef}
@@ -59,18 +61,18 @@ export const UploadTable = ({ modalRef, close }) => {
           <section className="flex flex-col flex-grow gap-2 overflow-auto">
             <table
               tabIndex={0}
+              ref={ref.registerNodeTable}
+              onClick={handler.clickTable}
+              onKeyUp={handler.shiftUp}
+              onKeyDown={handler.shiftDown}
               className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
             >
-              {Object.keys(workSheets).length != 0 &&
-                currentWorkSheet != undefined && (
-                  <div className="absolute left-2 top-0 w-4/5 h-4/5 border-2 bg-opacity-60 bg-blue-400 border-blue-600 "></div>
-                )}
-
               {workSheets[currentWorkSheet]?.map((index, key) => (
                 <TableRow
                   key={key}
+                  idRow={key}
                   style="flex gap-2 w-fit"
-                  styleColm="flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
+                  styleColm="box-table select-none flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
                   cellValues={index}
                 />
               ))}
