@@ -1,26 +1,19 @@
 import { useState, useRef, useCallback } from "react";
 
-const initialState = {
-  initialIndex: null,
-  finalIndex: null,
-};
+// TODO: refactor code
 
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
 
   const [shiftPressed, setShiftPressed] = useState(false);
-  // const [rowRange, setRowRange] = useState(initialState);
-  // const [columnRange, setColumnRange] = useState(initialState);
 
-  const rowRange = useRef(initialState);
-  const columnRange = useRef(initialState);
+  const initialRow = useRef(null);
+  const initialcolumn = useRef(null);
+
+  const finalRow = useRef(null);
+  const finalcolumn = useRef(null);
 
   const tableRef = useRef(null);
-
-  const hasValue = (property) =>
-    rowRange.current[property] != null && columnRange.current[property] != null
-      ? true
-      : false;
 
   const shiftDown = (e) => {
     if (e.key == "Shift") setShiftPressed(true);
@@ -29,13 +22,18 @@ export const useSelector = (workSheet) => {
   const shiftUp = (e) => {
     if (e.key == "Shift") {
       setShiftPressed(false);
+      setTable([]);
 
-      // rowRange.current.initialIndex = null;
-      // rowRange.current.finalIndex = null;
-      //
-      // columnRange.current.initialIndex = null;
-      // columnRange.current.finalIndex = null;
+      initialRow.current = null;
+      finalRow.current = null;
+
+      initialcolumn.current = null;
+      finalcolumn.current = null;
     }
+  };
+
+  const sliceArray = (array, initialIndex, finalIndex) => {
+    return array.slice(initialIndex, finalIndex + 1);
   };
 
   const clickTable = (e) => {
@@ -44,24 +42,29 @@ export const useSelector = (workSheet) => {
     const box = e.target.id.split(",");
     const boxIndex = { rowId: box[0], columnId: box[1] };
 
-    if (!hasValue("initialIndex")) {
-      rowRange.current.initialIndex = boxIndex.rowId;
-      columnRange.current.initialIndex = boxIndex.columnId;
+    if (initialRow.current == null && initialcolumn.current == null) {
+      initialRow.current = boxIndex.rowId;
+      initialcolumn.current = boxIndex.columnId;
     } else {
-      rowRange.current.finalIndex = boxIndex.rowId;
-      columnRange.current.finalIndex = boxIndex.columnId;
+      finalRow.current = boxIndex.rowId;
+      finalcolumn.current = boxIndex.columnId;
 
-      console.log(
-        `row index original: ${boxIndex.rowId} current: ${rowRange.current.finalIndex}`,
+      const slice = sliceArray(
+        workSheet,
+        parseInt(initialRow.current),
+        parseInt(finalRow.current),
       );
 
-      // if (hasValue("finalIndex")) createTable();
-    }
-  };
+      slice.forEach((element) => {
+        const finalCol = parseInt(finalcolumn.current);
+        const tableSelected = element.slice(
+          initialcolumn.current,
+          finalCol + 1,
+        );
 
-  const createTable = () => {
-    const row = rowRange.current;
-    const column = columnRange.current;
+        setTable((prev) => [...prev, tableSelected]);
+      });
+    }
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -73,5 +76,6 @@ export const useSelector = (workSheet) => {
   return {
     ref: { registerNodeTable },
     handler: { clickTable, shiftUp, shiftDown },
+    values: table,
   };
 };
