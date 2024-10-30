@@ -60,6 +60,7 @@ export const UploadTable = ({ modalRef, close }) => {
 
           <section className="flex flex-col flex-grow gap-2 overflow-auto">
             <table
+              autoFocus
               tabIndex={0}
               ref={ref.registerNodeTable}
               onClick={handler.clickTable}
