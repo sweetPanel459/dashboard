@@ -9,13 +9,18 @@ export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
 
   const [shiftPressed, setShiftPressed] = useState(false);
-  const [rowRange, setRowRange] = useState(initialState);
-  const [columnRange, setColumnRange] = useState(initialState);
+  // const [rowRange, setRowRange] = useState(initialState);
+  // const [columnRange, setColumnRange] = useState(initialState);
+
+  const rowRange = useRef(initialState);
+  const columnRange = useRef(initialState);
 
   const tableRef = useRef(null);
 
   const hasValue = (property) =>
-    rowRange[property] == null && columnRange[property] == null ? true : false;
+    rowRange.current[property] != null && columnRange.current[property] != null
+      ? true
+      : false;
 
   const shiftDown = (e) => {
     if (e.key == "Shift") setShiftPressed(true);
@@ -24,40 +29,39 @@ export const useSelector = (workSheet) => {
   const shiftUp = (e) => {
     if (e.key == "Shift") {
       setShiftPressed(false);
-      setRowRange(initialState);
-      setColumnRange(initialState);
+
+      // rowRange.current.initialIndex = null;
+      // rowRange.current.finalIndex = null;
+      //
+      // columnRange.current.initialIndex = null;
+      // columnRange.current.finalIndex = null;
     }
   };
 
   const clickTable = (e) => {
     if (!e.target.classList.contains("box-table") || !shiftPressed) return;
 
-    console.log("matame");
-
     const box = e.target.id.split(",");
     const boxIndex = { rowId: box[0], columnId: box[1] };
 
-    if (hasValue("initialIndex")) initialIndexTable(boxIndex);
-    else finalIndexTable(boxIndex);
-  };
+    if (!hasValue("initialIndex")) {
+      rowRange.current.initialIndex = boxIndex.rowId;
+      columnRange.current.initialIndex = boxIndex.columnId;
+    } else {
+      rowRange.current.finalIndex = boxIndex.rowId;
+      columnRange.current.finalIndex = boxIndex.columnId;
 
-  const initialIndexTable = (index) => {
-    setColumnRange((prev) => ({ ...prev, initialIndex: index.columnId }));
-    setRowRange((prev) => ({ ...prev, initialIndex: index.rowId }));
-  };
+      console.log(
+        `row index original: ${boxIndex.rowId} current: ${rowRange.current.finalIndex}`,
+      );
 
-  const finalIndexTable = (index) => {
-    setColumnRange((prev) => ({ ...prev, finalIndex: index.columnId }));
-    setRowRange((prev) => ({ ...prev, finalIndex: index.rowId }));
-
-    console.log(rowRange.initialIndex, rowRange.finalIndex);
-    if (hasValue("finalIndex")) createTable();
+      // if (hasValue("finalIndex")) createTable();
+    }
   };
 
   const createTable = () => {
-    const selectedSectionTable = [];
-
-    // console.log(workSheet.slice(rowRange.initialIndex, rowRange.finalIndex));
+    const row = rowRange.current;
+    const column = columnRange.current;
   };
 
   const registerNodeTable = useCallback((node) => {
