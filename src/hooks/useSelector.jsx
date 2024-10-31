@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback } from "react";
 
-// TODO: refactor all code
-
 const defaultRange = { initialIndex: null, finalIndex: null };
 
 export const useSelector = (workSheet) => {
@@ -29,16 +27,6 @@ export const useSelector = (workSheet) => {
     }
   };
 
-  const hasValue = (property) =>
-    rowRange.current[property] != null && columnRange.current[property] != null
-      ? true
-      : false;
-
-  const addValue = (property, rowValue, columnValue) => {
-    rowRange.current[property] = rowValue;
-    columnRange.current[property] = columnValue;
-  };
-
   const clickTable = (e) => {
     if (!e.target.classList.contains("box-table") || !shiftPressed) return;
 
@@ -48,13 +36,15 @@ export const useSelector = (workSheet) => {
 
     if (!hasValue("initialIndex")) {
       addValue("initialIndex", rowIndex, columnIndex);
-    } else {
+    } else if (hasValue("initialIndex")) {
       addValue("finalIndex", rowIndex, columnIndex);
       createTable();
     }
   };
 
+  // NOTE: se volvio a bugear, indices erroneos
   const createTable = () => {
+    const tableTemplate = [];
     const tableRows = sliceArray(
       workSheet,
       parseInt(rowRange.current.initialIndex),
@@ -68,8 +58,20 @@ export const useSelector = (workSheet) => {
         parseInt(columnRange.current.finalIndex),
       );
 
-      setTable((prev) => [...prev, tableSelected]);
+      tableTemplate.push(tableSelected);
     });
+
+    setTable(tableTemplate);
+  };
+
+  const hasValue = (property) =>
+    rowRange.current[property] != null && columnRange.current[property] != null
+      ? true
+      : false;
+
+  const addValue = (property, rowValue, columnValue) => {
+    rowRange.current[property] = rowValue;
+    columnRange.current[property] = columnValue;
   };
 
   const registerNodeTable = useCallback((node) => {
