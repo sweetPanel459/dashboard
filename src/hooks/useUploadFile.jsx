@@ -29,7 +29,9 @@ export const useUploadFile = () => {
     setCurrentWorkSheet(index);
   };
 
-  const deleteCurrentSheetNames = () => setSheetNames([]);
+  const deleteCurrentSheetNames = () => {
+    if (sheetNames.length >= 0) setSheetNames([]);
+  };
 
   return {
     handlers: { uploadFile },
