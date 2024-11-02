@@ -3,9 +3,12 @@ import { useState, useRef, useEffect, useCallback } from "react";
 // TODO :
 // - mejoras al hook useSelector
 //    1. cambiar el evento a shift a uno general :check:
-//    2. al momento de dejar de oprimir shift se guarde la tabla :check:
-//    3. solucionar los problemas de indices
-//    4. repasar el siclo de ejecucion de react y hacer optimizaciones
+//    2. repasar el siclo de ejecucion de react y hacer optimizaciones :check
+//    3. al momento de dejar de oprimir shift se guarde la tabla :check:
+//    4. solucionar los problemas de indices :check:
+// - mejoras en el custom hook uploadFile
+//    1. refactorizar nombre
+//    2. revisar si tiene mucha carga una funcion
 // - mejoras en la ui para el formulario de subir la tabla
 //    1. hacer las celdas mas bonitas
 //    2. cambiar la ubicacion de los elementos
@@ -67,7 +70,7 @@ export const useSelector = (workSheet) => {
     };
   }, []);
 
-  const clickTable = (e) => {
+  const clickOnBox = (e) => {
     if (!e.target.classList.contains("box-table") || !shiftPressed) return;
 
     const box = e.target.id.split(",");
@@ -78,6 +81,7 @@ export const useSelector = (workSheet) => {
       addValue("initialIndex", rowIndex, columnIndex);
     } else if (hasValue("initialIndex")) {
       addValue("finalIndex", rowIndex, columnIndex);
+
       createTable();
     }
   };
@@ -104,8 +108,6 @@ export const useSelector = (workSheet) => {
     setTable(tableTemplate);
   };
 
-  console.log(table);
-
   const hasValue = (property) =>
     rowRange.current[property] != null && columnRange.current[property] != null
       ? true
@@ -123,9 +125,9 @@ export const useSelector = (workSheet) => {
   });
 
   return {
-    values: table,
-    handler: { clickTable },
-    ref: { registerNodeTable },
+    value: { table },
+    handler: { clickOnBox },
+    reference: { registerNodeTable },
   };
 };
 
