@@ -1,15 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 // TODO :
-// - mejoras al hook useSelector
-//    1. cambiar el evento a shift a uno general :check:
-//    2. repasar el siclo de ejecucion de react y hacer optimizaciones :check
-//    3. al momento de dejar de oprimir shift se guarde la tabla :check:
-//    4. solucionar los problemas de indices :check:
+// ## fecha maxima - martes 5 noviembre
 // - mejoras en la ui para el formulario de subir la tabla
-//    1. hacer las celdas mas bonitas
-//    2. cambiar la ubicacion de los elementos
-//    3. add boton para la confirmacion de la tabla
+//    1. hacer 2 menus, el primero que es el de subir el archivo y el segundo que es para la ver tabla
+//    2. hacer las celdas mas bonitas
+//    3. cambiar la ubicacion de los elementos
+//    4. add boton para la confirmacion de la tabla
 //    5. hacer un indicador visual para saber cual se selecciono
 //    6. una barra de carga para cuando subas el archivo
 //    7. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
