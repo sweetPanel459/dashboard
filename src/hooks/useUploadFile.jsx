@@ -2,26 +2,33 @@ import { useState } from "react";
 import { read, utils } from "xlsx";
 
 export const useUploadFile = () => {
+  const [message, setMessage] = useState("");
   const [workSheets, setWorkSheets] = useState({});
   const [sheetNames, setSheetNames] = useState([]);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
 
-  const uploadFileHandler = async (e) => {
+  const uploadFile = async (e) => {
     const file = e.target.files[0];
+    const fileName = file.name;
+    const regex = /\.(xlsx|xlsm|xlsp|xls)$/i;
 
-    const fileBase64 = await ReadFileAsDataUrl(file);
-    const workbook = read(fileBase64, { type: "base64" });
+    if (regex.test(fileName)) {
+      const fileBase64 = await ReadFileAsDataUrl(file);
+      const workbook = read(fileBase64, { type: "base64" });
 
-    const worksheet = {};
+      const worksheet = {};
 
-    workbook.SheetNames.forEach((sheetName) => {
-      const addSheet = addWorkSheet(workbook, sheetName);
+      workbook.SheetNames.forEach((sheetName) => {
+        const addSheet = addWorkSheet(workbook, sheetName);
 
-      worksheet[sheetName] = addSheet.sheetData;
-      setSheetNames((prev) => [...prev, sheetName]);
-    });
+        worksheet[sheetName] = addSheet.sheetData;
+        setSheetNames((prev) => [...prev, sheetName]);
+      });
 
-    setWorkSheets(worksheet);
+      setWorkSheets(worksheet);
+    } else {
+      setMessage({ msg: "formato de archivo no valido" });
+    }
   };
 
   const putCurrentSheet = (e, index) => {
@@ -29,15 +36,16 @@ export const useUploadFile = () => {
     setCurrentWorkSheet(index);
   };
 
-  const deleteCurrentSheetNames = () => setSheetNames([]);
+  const deleteCurrentSheetNames = () => {
+    if (sheetNames.length >= 0) setSheetNames([]);
+  };
+
+  const closeModalMessage = () => setMessage("");
 
   return {
-    deleteCurrentSheetNames,
-    putCurrentSheet,
-    uploadFileHandler,
-    currentWorkSheet,
-    workSheets,
-    sheetNames,
+    handlers: { uploadFile },
+    values: { workSheets, sheetNames, currentWorkSheet, message },
+    helper: { putCurrentSheet, deleteCurrentSheetNames, closeModalMessage },
   };
 };
 

@@ -1,4 +1,29 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+
+// TODO :
+// ## fecha maxima - martes 5 noviembre
+// - mejoras en la ui para el formulario de subir la tabla
+//    1. hacer 2 menus, el primero que es el de subir el archivo y el segundo que es para la ver tabla
+//    2. hacer las celdas mas bonitas
+//    3. cambiar la ubicacion de los elementos
+//    4. add boton para la confirmacion de la tabla
+//    5. hacer un indicador visual para saber cual se selecciono
+//    6. una barra de carga para cuando subas el archivo
+//    7. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
+// - ui para la el registro de admin
+//    1. crear el modal contendor
+//    3. hacer 2 pasos para la confirm
+//    2. tendra 3 inputs, name, gmail y el token enviado
+//    4. hacer un componente para el header que sea un dropdown que contenga opciones sobre el usuario
+// - logica para el registro de admin
+//    1. confimar si el nombre si esta registrado
+//    2. con una exprecion regular confirmar en el front y en el backend si el gmail es correcto
+//    3. si es correcto registrarlo
+//    4. apenas se registre guardarlo en el localstorage su registro y permanecerlo abierto mientras no lo cierre manualmente
+// - custom hook para la preparcion del envio de la tabla
+//    1. armar la estructura del hook
+//    2. mediante el evento submit confirmar si todas las filas tengan la misma cantidad de indices
+//    3. obtener el parametro de url para el user id
 
 const defaultRange = { initialIndex: null, finalIndex: null };
 
@@ -10,24 +35,36 @@ export const useSelector = (workSheet) => {
   const rowRange = useRef(defaultRange);
   const columnRange = useRef(defaultRange);
 
-  const shiftDown = (e) => {
-    if (e.key == "Shift") setShiftPressed(true);
-  };
+  useEffect(() => {
+    const shiftUp = (e) => {
+      if (e.key == "Shift") {
+        setShiftPressed(false);
 
-  const shiftUp = (e) => {
-    if (e.key == "Shift") {
-      setShiftPressed(false);
-      setTable([]);
+        rowRange.current.initialIndex = null;
+        columnRange.current.initialIndex = null;
 
-      rowRange.current.initialIndex = null;
-      rowRange.current.finalIndex = null;
+        rowRange.current.finalIndex = null;
+        columnRange.current.finalIndex = null;
+      }
+    };
 
-      columnRange.current.initialIndex = null;
-      columnRange.current.finalIndex = null;
-    }
-  };
+    const shiftDown = (e) => {
+      if (e.key == "Shift") {
+        setShiftPressed(true);
+        setTable([]);
+      }
+    };
 
-  const clickTable = (e) => {
+    window.addEventListener("keydown", shiftDown);
+    window.addEventListener("keyup", shiftUp);
+
+    return () => {
+      window.addEventListener("keydown", shiftDown);
+      window.addEventListener("keyup", shiftUp);
+    };
+  }, []);
+
+  const clickOnBox = (e) => {
     if (!e.target.classList.contains("box-table") || !shiftPressed) return;
 
     const box = e.target.id.split(",");
@@ -38,13 +75,14 @@ export const useSelector = (workSheet) => {
       addValue("initialIndex", rowIndex, columnIndex);
     } else if (hasValue("initialIndex")) {
       addValue("finalIndex", rowIndex, columnIndex);
+
       createTable();
     }
   };
 
-  // NOTE: se volvio a bugear, indices erroneos
   const createTable = () => {
     const tableTemplate = [];
+
     const tableRows = sliceArray(
       workSheet,
       parseInt(rowRange.current.initialIndex),
@@ -81,9 +119,9 @@ export const useSelector = (workSheet) => {
   });
 
   return {
-    ref: { registerNodeTable },
-    handler: { clickTable, shiftUp, shiftDown },
-    values: table,
+    table,
+    handler: { clickOnBox },
+    reference: { registerNodeTable },
   };
 };
 
