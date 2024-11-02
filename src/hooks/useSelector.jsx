@@ -6,9 +6,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 //    2. repasar el siclo de ejecucion de react y hacer optimizaciones :check
 //    3. al momento de dejar de oprimir shift se guarde la tabla :check:
 //    4. solucionar los problemas de indices :check:
-// - mejoras en el custom hook uploadFile
-//    1. refactorizar nombre :check:
-//    2. revisar si tiene mucha carga una funcion
 // - mejoras en la ui para el formulario de subir la tabla
 //    1. hacer las celdas mas bonitas
 //    2. cambiar la ubicacion de los elementos

@@ -8,6 +8,8 @@ import { TableRow } from "../../containers/tableSections";
 import { ModalHeader } from "./modalHeader";
 import { FaFileUpload } from "react-icons/fa";
 
+import { FaXmark } from "react-icons/fa6";
+
 import { useSelector } from "../../hooks/useSelector";
 import { useUploadFile } from "../../hooks/useUploadFile";
 
@@ -23,17 +25,29 @@ export const UploadTable = ({ modalRef, close }) => {
       ref={modalRef}
       className=" absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
     >
-      <section className="flex flex-col gap-5 w-full h-full  p-5 rounded-lg border border-gray-500 bg-white">
+      {values.message?.msg && (
+        <section className="absolute h-24 p-2  rounded-lg border-gray-500 bg-white z-50">
+          <div className="relative flex  justify-center flex-col w-full h-full">
+            <FaXmark
+              className="absolute inset-0 text-xl"
+              onClick={helper.closeModalMessage}
+            />
+            {values.message.msg}
+          </div>
+        </section>
+      )}
+
+      <section className="flex flex-col gap-5 w-full h-full p-5 rounded-lg border border-gray-500 bg-white">
         <ModalHeader text="Subir tabla" click={close} />
         <form className="flex flex-col flex-grow gap-5 w-full overflow-auto">
-          <section className="flex gap-5 w-full min-h-20">
+          <section className="flex gap-5 w-full min-h-16">
             <Input
               id="upload-file"
               type="file"
               label={<ContentLabel />}
               styleInput="hidden"
               styleLabel="flex items-center justify-center w-full h-full"
-              styleContainer="flex-grow w-full rounded-lg border-2 border-dashed border-black"
+              styleContainer=" rounded-lg border border-gray-400"
               changeInput={(e) => {
                 helper.deleteCurrentSheetNames();
                 handlers.uploadFile(e);
@@ -87,11 +101,11 @@ const ContentLabel = () => (
   <div className="flex items-center gap-3 p-2">
     <FaFileUpload className="text-4xl text-gray-600" />
     <DoubleText
-      fristText="Arrastra y suelte su archivo"
+      fristText="Subir archivo"
       secondText=".xlsx, .xlsm, .xlsp y .xls"
-      style="flex flex-col items-center text-sm"
-      fristTextStyle="text-gray-600 font-medium"
-      secondTextStyle="text-gray-400"
+      style="flex flex-col items-center"
+      fristTextStyle="text-gray-600 font-medium text-xl"
+      secondTextStyle="text-gray-400 text-sm"
     />
   </div>
 );
