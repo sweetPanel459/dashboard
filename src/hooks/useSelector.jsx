@@ -1,11 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
-const defaultRange = { initialIndex: null, finalIndex: null };
-
 // TODO :
 // - mejoras al hook useSelector
-//    1. cambiar el evento a shift a uno general
-//    2. al momento de dejar de oprimir shift se guarde la tabla
+//    1. cambiar el evento a shift a uno general :check:
+//    2. al momento de dejar de oprimir shift se guarde la tabla :check:
 //    3. solucionar los problemas de indices
 //    4. repasar el siclo de ejecucion de react y hacer optimizaciones
 // - mejoras en la ui para el formulario de subir la tabla
@@ -30,6 +28,8 @@ const defaultRange = { initialIndex: null, finalIndex: null };
 //    2. mediante el evento submit confirmar si todas las filas tengan la misma cantidad de indices
 //    3. obtener el parametro de url para el user id
 
+const defaultRange = { initialIndex: null, finalIndex: null };
+
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
   const [shiftPressed, setShiftPressed] = useState(false);
@@ -39,12 +39,23 @@ export const useSelector = (workSheet) => {
   const columnRange = useRef(defaultRange);
 
   useEffect(() => {
-    const shiftDown = (e) => {
-      if (e.key == "Shift") console.log("es el shift para abajo");
+    const shiftUp = (e) => {
+      if (e.key == "Shift") {
+        setShiftPressed(false);
+
+        rowRange.current.initialIndex = null;
+        columnRange.current.initialIndex = null;
+
+        rowRange.current.finalIndex = null;
+        columnRange.current.finalIndex = null;
+      }
     };
 
-    const shiftUp = (e) => {
-      if (e.key == "Shift") console.log("es el shift para arriba");
+    const shiftDown = (e) => {
+      if (e.key == "Shift") {
+        setShiftPressed(true);
+        setTable([]);
+      }
     };
 
     window.addEventListener("keydown", shiftDown);
@@ -73,6 +84,7 @@ export const useSelector = (workSheet) => {
 
   const createTable = () => {
     const tableTemplate = [];
+
     const tableRows = sliceArray(
       workSheet,
       parseInt(rowRange.current.initialIndex),
@@ -91,6 +103,8 @@ export const useSelector = (workSheet) => {
 
     setTable(tableTemplate);
   };
+
+  console.log(table);
 
   const hasValue = (property) =>
     rowRange.current[property] != null && columnRange.current[property] != null

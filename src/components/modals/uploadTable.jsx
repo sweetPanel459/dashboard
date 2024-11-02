@@ -63,7 +63,7 @@ export const UploadTable = ({ modalRef, close }) => {
               autoFocus
               tabIndex={0}
               ref={ref.registerNodeTable}
-              onKeyDown={handler.shiftDown}
+              onClick={handler.clickTable}
               className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
             >
               {workSheets[currentWorkSheet]?.map((index, key) => (
