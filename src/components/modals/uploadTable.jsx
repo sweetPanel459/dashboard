@@ -63,8 +63,6 @@ export const UploadTable = ({ modalRef, close }) => {
               autoFocus
               tabIndex={0}
               ref={ref.registerNodeTable}
-              onClick={handler.clickTable}
-              onKeyUp={handler.shiftUp}
               onKeyDown={handler.shiftDown}
               className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
             >
