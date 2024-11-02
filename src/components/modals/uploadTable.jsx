@@ -11,20 +11,11 @@ import { FaFileUpload } from "react-icons/fa";
 import { useSelector } from "../../hooks/useSelector";
 import { useUploadFile } from "../../hooks/useUploadFile";
 
-import "../../styles/x.css";
-
 export const UploadTable = ({ modalRef, close }) => {
-  const {
-    deleteCurrentSheetNames,
-    putCurrentSheet,
-    uploadFileHandler,
-    currentWorkSheet,
-    sheetNames,
-    workSheets,
-  } = useUploadFile();
+  const { helper, handlers, values } = useUploadFile();
 
-  const { reference, handler, value } = useSelector(
-    workSheets[currentWorkSheet],
+  const { handler, reference, table } = useSelector(
+    values.workSheets[values.currentWorkSheet],
   );
 
   return (
@@ -44,8 +35,8 @@ export const UploadTable = ({ modalRef, close }) => {
               styleLabel="flex items-center justify-center w-full h-full"
               styleContainer="flex-grow w-full rounded-lg border-2 border-dashed border-black"
               changeInput={(e) => {
-                deleteCurrentSheetNames();
-                uploadFileHandler(e);
+                helper.deleteCurrentSheetNames();
+                handlers.uploadFile(e);
               }}
             />
             <Input
@@ -56,10 +47,6 @@ export const UploadTable = ({ modalRef, close }) => {
             />
           </section>
 
-          {/* NOTE:
-              -- get relative position of selector to its parent
-          */}
-
           <section className="flex flex-col flex-grow gap-2 overflow-auto">
             <table
               autoFocus
@@ -67,7 +54,7 @@ export const UploadTable = ({ modalRef, close }) => {
               ref={reference.registerNodeTable}
               onClick={handler.clickOnBox}
             >
-              {workSheets[currentWorkSheet]?.map((index, key) => (
+              {values.workSheets[values.currentWorkSheet]?.map((index, key) => (
                 <TableRow
                   key={key}
                   idRow={key}
@@ -78,12 +65,12 @@ export const UploadTable = ({ modalRef, close }) => {
               ))}
             </table>
             <div className="flex items-center w-full min-h-16">
-              {sheetNames.map((index, key) => (
+              {values.sheetNames.map((index, key) => (
                 <React.Fragment key={key}>
                   <Button
                     text={index}
                     styleButton="flex items-center justify-center flex-grow h-full px-2 text-xl hover:bg-gray-100 active:bg-gray-200"
-                    click={(e) => putCurrentSheet(e, index)}
+                    click={(e) => helper.putCurrentSheet(e, index)}
                   />
                   <span className="divis w-0.5 h-full bg-gray-300 last:hidden"></span>
                 </React.Fragment>

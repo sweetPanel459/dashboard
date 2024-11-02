@@ -6,7 +6,7 @@ export const useUploadFile = () => {
   const [sheetNames, setSheetNames] = useState([]);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
 
-  const uploadFileHandler = async (e) => {
+  const uploadFile = async (e) => {
     const file = e.target.files[0];
 
     const fileBase64 = await ReadFileAsDataUrl(file);
@@ -32,12 +32,9 @@ export const useUploadFile = () => {
   const deleteCurrentSheetNames = () => setSheetNames([]);
 
   return {
-    deleteCurrentSheetNames,
-    putCurrentSheet,
-    uploadFileHandler,
-    currentWorkSheet,
-    workSheets,
-    sheetNames,
+    handlers: { uploadFile },
+    helper: { putCurrentSheet, deleteCurrentSheetNames },
+    values: { workSheets, sheetNames, currentWorkSheet },
   };
 };
 

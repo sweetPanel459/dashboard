@@ -125,7 +125,7 @@ export const useSelector = (workSheet) => {
   });
 
   return {
-    value: { table },
+    table,
     handler: { clickOnBox },
     reference: { registerNodeTable },
   };
