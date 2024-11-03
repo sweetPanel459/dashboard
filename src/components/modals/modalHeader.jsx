@@ -3,11 +3,11 @@ import { Button } from "../common/button";
 
 import { FaXmark } from "react-icons/fa6";
 
-export const ModalHeader = ({ text, click }) => (
+export const ModalHeader = ({ text, click, styleText }) => (
   <header className="flex items-center justify-between h-10">
     <Text
       text={text}
-      style="text-4xl tracking-widest font-semibold font-grotesk"
+      style={`${styleText}  tracking-widest font-semibold font-grotesk`}
     />
     <Button
       icon={<FaXmark />}
