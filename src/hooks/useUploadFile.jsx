@@ -3,6 +3,9 @@ import { read, utils } from "xlsx";
 
 export const useUploadFile = () => {
   const [message, setMessage] = useState("");
+  const [progress, setProgess] = useState(0);
+  const [currentFileName, setCurrentFileName] = useState("");
+
   const [workSheets, setWorkSheets] = useState({});
   const [sheetNames, setSheetNames] = useState([]);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
@@ -13,7 +16,8 @@ export const useUploadFile = () => {
     const regex = /\.(xlsx|xlsm|xlsp|xls)$/i;
 
     if (regex.test(fileName)) {
-      const fileBase64 = await ReadFileAsDataUrl(file);
+      setCurrentFileName(fileName);
+      const fileBase64 = await ReadFileAsDataUrl(file, (e) => setProgess(e));
       const workbook = read(fileBase64, { type: "base64" });
 
       const worksheet = {};
@@ -44,8 +48,15 @@ export const useUploadFile = () => {
 
   return {
     handlers: { uploadFile },
-    values: { workSheets, sheetNames, currentWorkSheet, message },
     helper: { putCurrentSheet, deleteCurrentSheetNames, closeModalMessage },
+    values: {
+      workSheets,
+      sheetNames,
+      currentWorkSheet,
+      message,
+      progress,
+      currentFileName,
+    },
   };
 };
 
@@ -69,12 +80,18 @@ const addWorkSheet = (workbook, sheetName) => {
   return { sheetData };
 };
 
-const ReadFileAsDataUrl = (file) => {
+const ReadFileAsDataUrl = (file, process) => {
   return new Promise((res, rej) => {
     const reader = new FileReader();
 
-    reader.onload = (e) => {
-      res(e.target.result.split(",")[1]);
+    reader.onprogress = (e) => {
+      const progress = Math.round((e.loaded / file.size) * 100);
+
+      process(progress);
+    };
+
+    reader.onload = (event) => {
+      res(event.target.result.split(",")[1]);
     };
 
     reader.onerror = (error) => {

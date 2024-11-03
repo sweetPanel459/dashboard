@@ -22,6 +22,7 @@ export const UploadTable = ({ modalRef, close }) => {
     values.workSheets[values.currentWorkSheet],
   );
 
+  console.log(values.progress);
   return (
     <div
       ref={modalRef}
@@ -61,7 +62,10 @@ export const UploadTable = ({ modalRef, close }) => {
                 handlers.uploadFile(e);
               }}
             />
-            <FileUploadItem />
+            <FileUploadItem
+              progress={values.progress}
+              fileName={values.currentFileName}
+            />
           </section>
 
           {false && (
@@ -104,22 +108,26 @@ export const UploadTable = ({ modalRef, close }) => {
   );
 };
 
-const FileUploadItem = ({ procces, fileName }) => (
+const FileUploadItem = ({ progress, fileName }) => (
   <div className="flex items-center gap-2  w-full h-full">
     <FaFileExcel className="text-5xl" />
     <section className="flex flex-col flex-grow gap-1">
-      <Text text="Titulo del archivo" />
-      <ProccesBar procces={procces} />
+      <Text text={fileName} />
+      <ProccesBar progress={progress} />
     </section>
   </div>
 );
 
-const ProccesBar = ({ procces = 0 }) => (
+const ProccesBar = ({ progress }) => (
   <section className="flex items-center gap-2">
     <div className="flex w-full h-2 rounded-full overflow-hidden bg-gray-300">
-      <span className="transition-all duration-1000 w-0 h-full rounded-full bg-blue-400"></span>
+      <span
+        style={{ width: `${progress}%` }}
+        className="transition-all duration-100 w-0 h-full rounded-full bg-blue-400"
+      ></span>
     </div>
-    <Text text={`${procces}%`} style="flex justify-center w-12 text-sm" />
+    <span></span>
+    <Text text={`${progress}%`} style="flex justify-center w-12 text-sm" />
   </section>
 );
 
