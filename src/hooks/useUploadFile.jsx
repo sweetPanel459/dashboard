@@ -8,6 +8,7 @@ export const useUploadFile = () => {
 
   const [workSheets, setWorkSheets] = useState({});
   const [sheetNames, setSheetNames] = useState([]);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
 
   const uploadFile = async (e) => {
@@ -16,11 +17,13 @@ export const useUploadFile = () => {
     const regex = /\.(xlsx|xlsm|xlsp|xls)$/i;
 
     if (regex.test(fileName)) {
-      setCurrentFileName(fileName);
       const fileBase64 = await ReadFileAsDataUrl(file, (e) => setProgess(e));
-      const workbook = read(fileBase64, { type: "base64" });
+      const workbook = read(fileBase64.file, { type: "base64" });
 
       const worksheet = {};
+
+      setCurrentFileName(fileName);
+      setIsFileLoaded(fileBase64.fileLoad);
 
       workbook.SheetNames.forEach((sheetName) => {
         const addSheet = addWorkSheet(workbook, sheetName);
@@ -31,7 +34,7 @@ export const useUploadFile = () => {
 
       setWorkSheets(worksheet);
     } else {
-      setMessage({ msg: "formato de archivo no valido" });
+      setMessage({ msg: "Formato del archivo no valido" });
     }
   };
 
@@ -80,22 +83,22 @@ const addWorkSheet = (workbook, sheetName) => {
   return { sheetData };
 };
 
-const ReadFileAsDataUrl = (file, process) => {
+const ReadFileAsDataUrl = (file, progress) => {
   return new Promise((res, rej) => {
     const reader = new FileReader();
 
     reader.onprogress = (e) => {
-      const progress = Math.round((e.loaded / file.size) * 100);
+      const progressLoad = Math.round((e.loaded / file.size) * 100);
 
-      process(progress);
+      progress(progressLoad);
     };
 
     reader.onload = (event) => {
-      res(event.target.result.split(",")[1]);
+      res({ file: event.target.result.split(",")[1], fileLoad: true });
     };
 
     reader.onerror = (error) => {
-      rej(new Error({ msg: "no se pudo cargar el archivo", err: error }));
+      rej(new Error({ msg: "No se pudo cargar el archivo", err: error }));
     };
 
     reader.readAsDataURL(file);
