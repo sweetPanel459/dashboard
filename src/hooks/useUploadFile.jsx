@@ -3,8 +3,12 @@ import { read, utils } from "xlsx";
 
 export const useUploadFile = () => {
   const [message, setMessage] = useState("");
+  const [progress, setProgess] = useState(0);
+  const [currentFileName, setCurrentFileName] = useState("");
+
   const [workSheets, setWorkSheets] = useState({});
   const [sheetNames, setSheetNames] = useState([]);
+  const [isFileLoaded, setIsFileLoaded] = useState(false);
   const [currentWorkSheet, setCurrentWorkSheet] = useState(undefined);
 
   const uploadFile = async (e) => {
@@ -13,10 +17,13 @@ export const useUploadFile = () => {
     const regex = /\.(xlsx|xlsm|xlsp|xls)$/i;
 
     if (regex.test(fileName)) {
-      const fileBase64 = await ReadFileAsDataUrl(file);
-      const workbook = read(fileBase64, { type: "base64" });
+      const fileBase64 = await ReadFileAsDataUrl(file, (e) => setProgess(e));
+      const workbook = read(fileBase64.file, { type: "base64" });
 
       const worksheet = {};
+
+      setCurrentFileName(fileName);
+      setIsFileLoaded(fileBase64.fileLoad);
 
       workbook.SheetNames.forEach((sheetName) => {
         const addSheet = addWorkSheet(workbook, sheetName);
@@ -27,7 +34,7 @@ export const useUploadFile = () => {
 
       setWorkSheets(worksheet);
     } else {
-      setMessage({ msg: "formato de archivo no valido" });
+      setMessage({ msg: "Formato del archivo no valido" });
     }
   };
 
@@ -44,8 +51,16 @@ export const useUploadFile = () => {
 
   return {
     handlers: { uploadFile },
-    values: { workSheets, sheetNames, currentWorkSheet, message },
     helper: { putCurrentSheet, deleteCurrentSheetNames, closeModalMessage },
+    values: {
+      workSheets,
+      sheetNames,
+      message,
+      progress,
+      isFileLoaded,
+      currentFileName,
+      currentWorkSheet,
+    },
   };
 };
 
@@ -69,16 +84,22 @@ const addWorkSheet = (workbook, sheetName) => {
   return { sheetData };
 };
 
-const ReadFileAsDataUrl = (file) => {
+const ReadFileAsDataUrl = (file, progress) => {
   return new Promise((res, rej) => {
     const reader = new FileReader();
 
-    reader.onload = (e) => {
-      res(e.target.result.split(",")[1]);
+    reader.onprogress = (e) => {
+      const progressLoad = Math.round((e.loaded / file.size) * 100);
+
+      progress(progressLoad);
+    };
+
+    reader.onload = (event) => {
+      res({ file: event.target.result.split(",")[1], fileLoad: true });
     };
 
     reader.onerror = (error) => {
-      rej(new Error({ msg: "no se pudo cargar el archivo", err: error }));
+      rej(new Error({ msg: "No se pudo cargar el archivo", err: error }));
     };
 
     reader.readAsDataURL(file);

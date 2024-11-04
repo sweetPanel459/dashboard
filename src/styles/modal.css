@@ -1,0 +1,9 @@
+.open {
+  width: 100%;
+  height: 100%;
+}
+
+.close {
+  width: 30%;
+  height: fit-content;
+}
