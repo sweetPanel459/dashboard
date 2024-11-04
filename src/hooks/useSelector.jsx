@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 // TODO :
 // ## fecha maxima - martes 5 noviembre
 // - mejoras en la ui para el formulario de subir la tabla
-//    1. hacer una confirmacion si ya cargo el archivo para luego pasar a la segunda parte
+//    1. mejorar la legibiliad del todo el componente uploadTable (html)
 //    2. hacer las celdas mas bonitas
 //    3. cambiar la ubicacion de los elementos
 //    4. add boton para la confirmacion de la tabla

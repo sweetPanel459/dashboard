@@ -55,10 +55,11 @@ export const useUploadFile = () => {
     values: {
       workSheets,
       sheetNames,
-      currentWorkSheet,
       message,
       progress,
+      isFileLoaded,
       currentFileName,
+      currentWorkSheet,
     },
   };
 };

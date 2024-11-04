@@ -22,23 +22,12 @@ export const UploadTable = ({ modalRef, close }) => {
     values.workSheets[values.currentWorkSheet],
   );
 
-  console.log(values.progress);
   return (
     <div
       ref={modalRef}
       className="absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
     >
-      {values.message?.msg && (
-        <section className="absolute h-24 p-2  rounded-lg border-gray-500 bg-white z-50">
-          <div className="relative flex  justify-center flex-col w-full h-full">
-            <FaXmark
-              className="absolute inset-0 text-xl"
-              onClick={helper.closeModalMessage}
-            />
-            {values.message.msg}
-          </div>
-        </section>
-      )}
+      {values.message?.msg && <AlertMessage />}
 
       <section
         className={` ${false ? "open" : "close"} flex flex-col gap-5  p-5 rounded-lg border border-gray-500 bg-white`}
@@ -71,7 +60,6 @@ export const UploadTable = ({ modalRef, close }) => {
           {false && (
             <section className="flex flex-col flex-grow gap-2 overflow-auto">
               <table
-                autoFocus
                 className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
                 ref={reference.registerNodeTable}
                 onClick={handler.clickOnBox}
@@ -107,6 +95,18 @@ export const UploadTable = ({ modalRef, close }) => {
     </div>
   );
 };
+
+const AlertMessage = () => (
+  <section className="absolute h-24 p-2  rounded-lg border-gray-500 bg-white z-50">
+    <div className="relative flex  justify-center flex-col w-full h-full">
+      <FaXmark
+        className="absolute inset-0 text-xl"
+        onClick={helper.closeModalMessage}
+      />
+      {values.message.msg}
+    </div>
+  </section>
+);
 
 const FileUploadItem = ({ progress, fileName }) => (
   <div className="flex items-center gap-2  w-full h-full">
