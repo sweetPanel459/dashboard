@@ -39,62 +39,79 @@ export const UploadTable = ({ modalRef, close }) => {
         />
         <form className="flex flex-col flex-grow gap-5 w-full overflow-auto">
           {!values.isFileLoaded && (
-            <section className="flex flex-col gap-5 w-full min-h-16">
-              <Input
-                id="upload-file"
-                type="file"
-                label={<ContentLabel />}
-                styleInput="hidden"
-                styleLabel="flex items-center justify-center w-full h-full"
-                styleContainer="w-full rounded-lg border border-gray-400"
-                changeInput={(e) => {
-                  helper.deleteCurrentSheetNames();
-                  handlers.uploadFile(e);
-                }}
-              />
-              <FileUploadItem
-                progress={values.progress}
-                fileName={values.currentFileName}
-              />
-            </section>
+            <FileUpload helper={helper} handler={handlers} values={values} />
           )}
 
           {values.isFileLoaded && (
-            <section className="flex flex-col flex-grow gap-2 overflow-auto">
-              <table
-                className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
-                ref={reference.registerNodeTable}
-                onClick={handler.clickOnBox}
-              >
-                {values.workSheets[values.currentWorkSheet]?.map(
-                  (index, key) => (
-                    <TableRow
-                      key={key}
-                      idRow={key}
-                      cellValues={index}
-                      style="flex gap-2 w-fit"
-                      styleColm="box-table select-none flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
-                    />
-                  ),
-                )}
-              </table>
-              <div className="flex items-center w-full min-h-16">
-                {values.sheetNames.map((index, key) => (
-                  <React.Fragment key={key}>
-                    <Button
-                      text={index}
-                      styleButton="flex items-center justify-center flex-grow h-full px-2 text-xl hover:bg-gray-100 active:bg-gray-200"
-                      click={(e) => helper.putCurrentSheet(e, index)}
-                    />
-                    <span className="divis w-0.5 h-full bg-gray-300 last:hidden"></span>
-                  </React.Fragment>
-                ))}
-              </div>
-            </section>
+            <FileOptions
+              values={values}
+              reference={reference}
+              handler={handler}
+              helper={helper}
+            />
           )}
         </form>
       </section>
     </div>
+  );
+};
+
+// pasar los siguientes 2 componentes a otra carpeta
+
+const FileUpload = ({ values, helper, handler }) => {
+  return (
+    <section className="flex flex-col gap-5 w-full min-h-16">
+      <Input
+        id="upload-file"
+        type="file"
+        label={<ContentLabel />}
+        styleInput="hidden"
+        styleLabel="flex items-center justify-center w-full h-full"
+        styleContainer="w-full rounded-lg border border-gray-400"
+        changeInput={(e) => {
+          helper.deleteCurrentSheetNames();
+          handler.uploadFile(e);
+        }}
+      />
+      <FileUploadItem
+        progress={values.progress}
+        fileName={values.currentFileName}
+      />
+    </section>
+  );
+};
+
+const FileOptions = ({ values, reference, handler, helper }) => {
+  return (
+    <section className="flex flex-col flex-grow gap-2 overflow-auto">
+      <div className="flex items-center w-full min-h-16">
+        {values.sheetNames.map((index, key) => (
+          <React.Fragment key={key}>
+            <Button
+              text={index}
+              styleButton="flex items-center justify-center flex-grow h-full px-2 text-xl hover:bg-gray-100 active:bg-gray-200"
+              click={(e) => helper.putCurrentSheet(e, index)}
+            />
+            <span className="divis w-0.5 h-full bg-gray-300 last:hidden"></span>
+          </React.Fragment>
+        ))}
+      </div>
+      <table
+        ref={reference.registerNodeTable}
+        className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
+        onClick={handler.clickOnBox}
+      >
+        {values.workSheets[values.currentWorkSheet]?.map((index, key) => (
+          <TableRow
+            key={key}
+            idRow={key}
+            cellValues={index}
+            style="flex gap-2 w-fit"
+            styleColm="box-table select-none flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
+          />
+        ))}
+      </table>
+    </section>
   );
 };
 
