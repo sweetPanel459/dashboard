@@ -30,34 +30,36 @@ export const UploadTable = ({ modalRef, close }) => {
       {values.message?.msg && <AlertMessage />}
 
       <section
-        className={` ${false ? "open" : "close"} flex flex-col gap-5  p-5 rounded-lg border border-gray-500 bg-white`}
+        className={`${values.isFileLoaded ? "open" : "close"} flex flex-col gap-5  p-5 rounded-lg border border-gray-500 bg-white`}
       >
         <ModalHeader
           text="Cargador de archivos de Excel"
-          styleText="text-2xl"
+          styleText={`${values.isFileLoaded ? "text-4xl" : "text-xl"}`}
           click={close}
         />
         <form className="flex flex-col flex-grow gap-5 w-full overflow-auto">
-          <section className="flex flex-col gap-5 w-full min-h-16">
-            <Input
-              id="upload-file"
-              type="file"
-              label={<ContentLabel />}
-              styleInput="hidden"
-              styleLabel="flex items-center justify-center w-full h-full"
-              styleContainer="w-full rounded-lg border border-gray-400"
-              changeInput={(e) => {
-                helper.deleteCurrentSheetNames();
-                handlers.uploadFile(e);
-              }}
-            />
-            <FileUploadItem
-              progress={values.progress}
-              fileName={values.currentFileName}
-            />
-          </section>
+          {!values.isFileLoaded && (
+            <section className="flex flex-col gap-5 w-full min-h-16">
+              <Input
+                id="upload-file"
+                type="file"
+                label={<ContentLabel />}
+                styleInput="hidden"
+                styleLabel="flex items-center justify-center w-full h-full"
+                styleContainer="w-full rounded-lg border border-gray-400"
+                changeInput={(e) => {
+                  helper.deleteCurrentSheetNames();
+                  handlers.uploadFile(e);
+                }}
+              />
+              <FileUploadItem
+                progress={values.progress}
+                fileName={values.currentFileName}
+              />
+            </section>
+          )}
 
-          {false && (
+          {values.isFileLoaded && (
             <section className="flex flex-col flex-grow gap-2 overflow-auto">
               <table
                 className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
