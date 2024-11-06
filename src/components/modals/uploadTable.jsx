@@ -27,7 +27,7 @@ export const UploadTable = ({ modalRef, close }) => {
       ref={modalRef}
       className="absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
     >
-      {values.message?.msg && <AlertMessage />}
+      {values.message?.err && <AlertMessage />}
 
       <section
         className={`${values.isFileLoaded ? "open" : "close"} flex flex-col gap-5  p-5 rounded-lg border border-gray-500 bg-white`}
@@ -84,7 +84,7 @@ const FileUpload = ({ values, helper, handler }) => {
 const FileOptions = ({ values, reference, handler, helper }) => {
   return (
     <section className="flex flex-col flex-grow gap-2 overflow-auto">
-      <div className="flex items-center w-full min-h-16">
+      <nav className="flex items-center w-full min-h-16">
         {values.sheetNames.map((index, key) => (
           <React.Fragment key={key}>
             <Button
@@ -95,7 +95,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             <span className="divis w-0.5 h-full bg-gray-300 last:hidden"></span>
           </React.Fragment>
         ))}
-      </div>
+      </nav>
       <table
         ref={reference.registerNodeTable}
         className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
@@ -111,6 +111,21 @@ const FileOptions = ({ values, reference, handler, helper }) => {
           />
         ))}
       </table>
+      <div className="flex items-center gap-2 w-full h-20 ">
+        <input
+          type="text"
+          placeholder="Ingresar nombre de la tabla..."
+          className="flex-grow h-full p-2 rounded-lg border border-gray-500 bg-transparent placeholder:text-xl placeholder:font-medium"
+        />
+        <Button
+          text="Borrar Tabla actual"
+          styleButton="font-semibold items-center w-fit h-full px-3 text-xl text-white rounded-lg bg-red-400"
+        />
+        <Button
+          text="Subir tabla"
+          styleButton="font-semibold items-center w-fit h-full px-3 text-xl text-white rounded-lg bg-gray-800"
+        />
+      </div>
     </section>
   );
 };
