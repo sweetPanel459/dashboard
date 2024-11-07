@@ -96,9 +96,10 @@ const FileOptions = ({ values, reference, handler, helper }) => {
           </React.Fragment>
         ))}
       </nav>
+
       <table
         ref={reference.registerNodeTable}
-        className="relative flex flex-col flex-grow gap-2 p-2 w-full overflow-auto  border border-black bg-gray-200"
+        className="relative  flex flex-col flex-grow w-full overflow-auto  border border-gray-900"
         onClick={handler.clickOnBox}
       >
         {values.workSheets[values.currentWorkSheet]?.map((index, key) => (
@@ -106,11 +107,12 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             key={key}
             idRow={key}
             cellValues={index}
-            style="flex gap-2 w-fit"
-            styleColm="box-table select-none flex items-center justify-center min-w-52 max-w-52 h-8 overflow-hidden text-lg bg-white"
+            style="flex w-fit border-b border-gray-900 "
+            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-96 h-12 overflow-hidden text-lg bg-white"
           />
         ))}
       </table>
+
       <div className="flex items-center gap-2 w-full h-20 ">
         <input
           type="text"
