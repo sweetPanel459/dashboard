@@ -34,7 +34,7 @@ export const useUploadFile = () => {
 
       setWorkSheets(worksheet);
     } else {
-      setMessage({ msg: "Formato del archivo no valido" });
+      setMessage({ err: "Formato del archivo no valido" });
     }
   };
 
