@@ -2,12 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // TODO :
 // - mejoras en la ui para el formulario de subir la tabla
-//    1. mejorar la legibiliad del todo el componente uploadTable (html)
-//    2. hacer las celdas mas bonitas
-//    3. cambiar la ubicacion de los elementos
-//    4. add boton para la confirmacion de la tabla
-//    5. hacer un indicador visual para saber cual se selecciono
-//    6. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
+//    1. hacer un indicador visual para saber cual se selecciono
+//    2. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
 // - ui para la el registro de admin
 //    1. crear el modal contendor
 //    3. hacer 2 pasos para la confirm
