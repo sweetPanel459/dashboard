@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
 // TODO :
-// - Mas adelante
-//    - drag and drop para soltar el archivo
 // - mejoras en la ui para el formulario de subir la tabla
 //    1. hacer un indicador visual para saber cual se selecciono
 // - ui para la el registro de admin
@@ -23,7 +21,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 // NOTE:
 // - al momento de oprimir el click en una casilla, se optiene su w,h,x,y luego cuando oprimas en la segunda casilla lo multiplicas por el numero de la casilla, en length
 // - primero toca arreglar el error del selector de la tabla, que no esta reiniciando bien los valore
-// - busca el valor final de los inidice que obtienes
 
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
@@ -70,47 +67,38 @@ export const useSelector = (workSheet) => {
     if (Object.keys(initialRange).length === 0) {
       setInitialRange({ initialRow: rowIndex, initialColumn: columnIndex });
     } else {
-      setFinalRange({ finalRow: rowIndex, finalColumn: columnIndex });
-    }
+      setFinalRange((prevRange) => {
+        const updatedRange = {
+          ...prevRange,
+          finalRow: rowIndex,
+          finalColumn: columnIndex,
+        };
 
-    if (
-      Object.keys(initialRange).length !== 0 &&
-      Object.keys(finalRange).length !== 0
-    ) {
-      createTable();
+        createTable(updatedRange);
+
+        return updatedRange;
+      });
     }
   };
 
-  const createTable = () => {
+  const createTable = (endRange) => {
     const tableTemplate = [];
 
-    const tableRows = sliceArray(
-      workSheet,
+    const selectedRows = workSheet.slice(
       parseInt(initialRange.initialRow),
-      parseInt(finalRange.finalRow),
+      parseInt(endRange.finalRow) + 1,
     );
 
-    tableRows.forEach((tableColumns) => {
-      const tableSelected = sliceArray(
-        tableColumns,
+    selectedRows.forEach((tableColumns) => {
+      const tableSelected = tableColumns.slice(
         parseInt(initialRange.initialColumn),
-        parseInt(finalRange.finalColumn),
+        parseInt(endRange.finalColumn) + 1,
       );
 
       tableTemplate.push(tableSelected);
     });
 
     setTable(tableTemplate);
-  };
-
-  const hasValue = (property) =>
-    rowRange.current[property] != null && columnRange.current[property] != null
-      ? true
-      : false;
-
-  const addValue = (property, rowValue, columnValue) => {
-    rowRange.current[property] = rowValue;
-    columnRange.current[property] = columnValue;
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -124,8 +112,4 @@ export const useSelector = (workSheet) => {
     handler: { clickOnBox },
     reference: { registerNodeTable },
   };
-};
-
-const sliceArray = (array, initialIndex, finalIndex) => {
-  return array.slice(initialIndex, finalIndex + 1);
 };
