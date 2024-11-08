@@ -35,7 +35,7 @@ export const UploadTable = ({ modalRef, close }) => {
       >
         <ModalHeader
           text="Cargador de archivos de Excel"
-          styleText={`${values.isFileLoaded ? "text-4xl" : "text-xl"}`}
+          styleText={`${values.isFileLoaded ? "text-4xl" : "text-2xl"}`}
           click={close}
         />
         <form className="nose flex flex-col flex-grow gap-5 w-full overflow-auto">
@@ -61,14 +61,14 @@ export const UploadTable = ({ modalRef, close }) => {
 
 const FileUpload = ({ values, helper, handler }) => {
   return (
-    <section className="flex flex-col gap-5 w-full min-h-16">
+    <section className="flex flex-col gap-5 w-full h-96">
       <Input
         id="upload-file"
         type="file"
         label={<ContentLabel />}
         styleInput="hidden"
         styleLabel="flex items-center justify-center w-full h-full"
-        styleContainer="w-full rounded-lg border border-gray-400"
+        styleContainer="w-full h-full rounded-lg border border-gray-400"
         changeInput={(e) => {
           helper.deleteCurrentSheetNames();
           handler.uploadFile(e);
