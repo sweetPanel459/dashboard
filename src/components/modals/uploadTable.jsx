@@ -2,7 +2,7 @@ import React from "react";
 
 import { Input } from "../common/input";
 import { Button } from "../common/button";
-import { DropDown } from "../common/dropdown";
+import { DropdownOptions } from "../common/dropdown";
 import { DoubleText, Text } from "../common/texts";
 
 import { TableRow } from "../../containers/tableSections";
@@ -26,7 +26,7 @@ export const UploadTable = ({ modalRef, close }) => {
   return (
     <div
       ref={modalRef}
-      className="absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-10"
+      className="absolute inset-0 flex items-center justify-center bg-transparent backdrop-blur p-3"
     >
       {values.message?.err && <AlertMessage />}
 
@@ -38,7 +38,7 @@ export const UploadTable = ({ modalRef, close }) => {
           styleText={`${values.isFileLoaded ? "text-4xl" : "text-xl"}`}
           click={close}
         />
-        <form className="flex flex-col flex-grow gap-5 w-full overflow-auto">
+        <form className="nose flex flex-col flex-grow gap-5 w-full overflow-auto">
           {!values.isFileLoaded && (
             <FileUpload helper={helper} handler={handlers} values={values} />
           )}
@@ -74,17 +74,19 @@ const FileUpload = ({ values, helper, handler }) => {
           handler.uploadFile(e);
         }}
       />
-      <FileUploadItem
-        progress={values.progress}
-        fileName={values.currentFileName}
-      />
+      {values.currenFileName && (
+        <FileUploadItem
+          progress={values.progress}
+          fileName={values.currentFileName}
+        />
+      )}
     </section>
   );
 };
 
 const FileOptions = ({ values, reference, handler, helper }) => {
   return (
-    <section className="flex flex-col flex-grow gap-2 overflow-auto">
+    <section className="nose flex flex-col flex-grow gap-2 overflow-auto">
       <table
         ref={reference.registerNodeTable}
         className="relative  flex flex-col flex-grow w-full overflow-auto  border border-gray-900"
@@ -96,7 +98,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             idRow={key}
             cellValues={index}
             style="flex w-fit border-b border-gray-900 "
-            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-96 h-12 overflow-hidden text-lg bg-white"
+            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 overflow-hidden text-sm bg-white"
           />
         ))}
       </table>
@@ -107,7 +109,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
           placeholder="Ingresar nombre de la tabla..."
           className="flex-grow h-full p-2 rounded-lg border border-gray-500 bg-transparent placeholder:text-xl placeholder:font-medium"
         />
-        <DropDown
+        <DropdownOptions
           defaultValue="Nose"
           styleContainer="h-full "
           styleList="border-blue-400"
