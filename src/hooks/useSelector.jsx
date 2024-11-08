@@ -3,7 +3,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 // TODO :
 // - mejoras en la ui para el formulario de subir la tabla
 //    1. hacer un indicador visual para saber cual se selecciono
-//    2. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
 // - ui para la el registro de admin
 //    1. crear el modal contendor
 //    3. hacer 2 pasos para la confirm
@@ -19,26 +18,26 @@ import { useState, useRef, useEffect, useCallback } from "react";
 //    2. mediante el evento submit confirmar si todas las filas tengan la misma cantidad de indices
 //    3. obtener el parametro de url para el user id
 
-const defaultRange = { initialIndex: null, finalIndex: null };
+// NOTE:
+// - al momento de oprimir el click en una casilla, se optiene su w,h,x,y luego cuando oprimas en la segunda casilla lo multiplicas por el numero de la casilla, en length
+// - primero toca arreglar el error del selector de la tabla, que no esta reiniciando bien los valore
 
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
   const [shiftPressed, setShiftPressed] = useState(false);
 
+  const [initialRange, setInitialRange] = useState({});
+  const [finalRange, setFinalRange] = useState({});
+
   const tableRef = useRef(null);
-  const rowRange = useRef(defaultRange);
-  const columnRange = useRef(defaultRange);
 
   useEffect(() => {
     const shiftUp = (e) => {
       if (e.key == "Shift") {
         setShiftPressed(false);
 
-        rowRange.current.initialIndex = null;
-        columnRange.current.initialIndex = null;
-
-        rowRange.current.finalIndex = null;
-        columnRange.current.finalIndex = null;
+        setInitialRange({});
+        setFinalRange({});
       }
     };
 
@@ -65,45 +64,40 @@ export const useSelector = (workSheet) => {
     const rowIndex = box[0];
     const columnIndex = box[1];
 
-    if (!hasValue("initialIndex")) {
-      addValue("initialIndex", rowIndex, columnIndex);
-    } else if (hasValue("initialIndex")) {
-      addValue("finalIndex", rowIndex, columnIndex);
+    if (Object.keys(initialRange).length === 0) {
+      setInitialRange({ initialRow: rowIndex, initialColumn: columnIndex });
+    } else {
+      setFinalRange(() => {
+        const updatedRange = {
+          finalRow: rowIndex,
+          finalColumn: columnIndex,
+        };
 
-      createTable();
+        createTable(updatedRange);
+
+        return updatedRange;
+      });
     }
   };
 
-  const createTable = () => {
+  const createTable = (endRange) => {
     const tableTemplate = [];
 
-    const tableRows = sliceArray(
-      workSheet,
-      parseInt(rowRange.current.initialIndex),
-      parseInt(rowRange.current.finalIndex),
+    const selectedRows = workSheet.slice(
+      parseInt(initialRange.initialRow),
+      parseInt(endRange.finalRow) + 1,
     );
 
-    tableRows.forEach((tableColumns) => {
-      const tableSelected = sliceArray(
-        tableColumns,
-        parseInt(columnRange.current.initialIndex),
-        parseInt(columnRange.current.finalIndex),
+    selectedRows.forEach((tableColumns) => {
+      const tableSelected = tableColumns.slice(
+        parseInt(initialRange.initialColumn),
+        parseInt(endRange.finalColumn) + 1,
       );
 
       tableTemplate.push(tableSelected);
     });
 
     setTable(tableTemplate);
-  };
-
-  const hasValue = (property) =>
-    rowRange.current[property] != null && columnRange.current[property] != null
-      ? true
-      : false;
-
-  const addValue = (property, rowValue, columnValue) => {
-    rowRange.current[property] = rowValue;
-    columnRange.current[property] = columnValue;
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -117,8 +111,4 @@ export const useSelector = (workSheet) => {
     handler: { clickOnBox },
     reference: { registerNodeTable },
   };
-};
-
-const sliceArray = (array, initialIndex, finalIndex) => {
-  return array.slice(initialIndex, finalIndex + 1);
 };

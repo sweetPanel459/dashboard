@@ -7,3 +7,15 @@
   width: 30%;
   height: fit-content;
 }
+
+.active {
+  border-left-width: 4px;
+  border-left-color: #2563eb;
+  /* Equivalente a border-blue-600 */
+  background-color: #93c5fd;
+  /* Equivalente a bg-blue-300 */
+  color: #ffffff;
+  /* Equivalente a text-white */
+  font-weight: 600;
+  /* Equivalente a font-semibold */
+}
