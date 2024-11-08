@@ -67,9 +67,8 @@ export const useSelector = (workSheet) => {
     if (Object.keys(initialRange).length === 0) {
       setInitialRange({ initialRow: rowIndex, initialColumn: columnIndex });
     } else {
-      setFinalRange((prevRange) => {
+      setFinalRange(() => {
         const updatedRange = {
-          ...prevRange,
           finalRow: rowIndex,
           finalColumn: columnIndex,
         };
