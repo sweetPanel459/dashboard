@@ -41,7 +41,6 @@ export const useUploadFile = () => {
   const putCurrentSheet = (e, index) => {
     e.preventDefault();
     setCurrentWorkSheet(index);
-    console.log(index);
   };
 
   const deleteCurrentSheetNames = () => {
