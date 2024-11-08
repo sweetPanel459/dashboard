@@ -2,6 +2,7 @@ import React from "react";
 
 import { Input } from "../common/input";
 import { Button } from "../common/button";
+import { DropDown } from "../common/dropdown";
 import { DoubleText, Text } from "../common/texts";
 
 import { TableRow } from "../../containers/tableSections";
@@ -84,19 +85,6 @@ const FileUpload = ({ values, helper, handler }) => {
 const FileOptions = ({ values, reference, handler, helper }) => {
   return (
     <section className="flex flex-col flex-grow gap-2 overflow-auto">
-      <nav className="flex items-center w-full min-h-16">
-        {values.sheetNames.map((index, key) => (
-          <React.Fragment key={key}>
-            <Button
-              text={index}
-              styleButton="flex items-center justify-center flex-grow h-full px-2 text-xl hover:bg-gray-100 active:bg-gray-200"
-              click={(e) => helper.putCurrentSheet(e, index)}
-            />
-            <span className="divis w-0.5 h-full bg-gray-300 last:hidden"></span>
-          </React.Fragment>
-        ))}
-      </nav>
-
       <table
         ref={reference.registerNodeTable}
         className="relative  flex flex-col flex-grow w-full overflow-auto  border border-gray-900"
@@ -113,11 +101,21 @@ const FileOptions = ({ values, reference, handler, helper }) => {
         ))}
       </table>
 
-      <div className="flex items-center gap-2 w-full h-20 ">
+      <nav className="flex items-center gap-2 w-full min-h-10 max-h-10">
         <input
           type="text"
           placeholder="Ingresar nombre de la tabla..."
           className="flex-grow h-full p-2 rounded-lg border border-gray-500 bg-transparent placeholder:text-xl placeholder:font-medium"
+        />
+        <DropDown
+          defaultValue="Nose"
+          styleContainer="h-full "
+          styleList="border-blue-400"
+          styleHeader="border-blue-400 h-full rounded-lg"
+          option={values.sheetNames}
+          buttonClick={(e, index) => {
+            helper.putCurrentSheet(e, index);
+          }}
         />
         <Button
           text="Borrar Tabla actual"
@@ -127,7 +125,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
           text="Subir tabla"
           styleButton="font-semibold items-center w-fit h-full px-3 text-xl text-white rounded-lg bg-gray-800"
         />
-      </div>
+      </nav>
     </section>
   );
 };
@@ -159,7 +157,7 @@ const ProccesBar = ({ progress }) => (
     <div className="flex w-full h-2 rounded-full overflow-hidden bg-gray-300">
       <span
         style={{ width: `${progress}%` }}
-        className="transition-all duration-100 w-0 h-full rounded-full bg-blue-400"
+        className="w-0 h-full rounded-full bg-blue-400"
       ></span>
     </div>
     <span></span>

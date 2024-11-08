@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // TODO :
 // - mejoras en la ui para el formulario de subir la tabla
+//    0. cambiar por un menu desplegable los botones para seleccionar el worksheet
 //    1. hacer un indicador visual para saber cual se selecciono
 //    2. un componente que contenga el nombre del archivo y su tipo de archivo y ademas un boton para eliminar
 // - ui para la el registro de admin
