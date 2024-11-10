@@ -86,10 +86,10 @@ const FileUpload = ({ values, helper, handler }) => {
 
 const FileOptions = ({ values, reference, handler, helper }) => {
   return (
-    <section className="nose flex flex-col flex-grow gap-2 overflow-auto">
+    <section className=" flex flex-col flex-grow gap-2 overflow-hidden ">
       <table
         ref={reference.registerNodeTable}
-        className="relative  flex flex-col flex-grow w-full overflow-auto  border border-gray-900"
+        className="flex flex-col flex-grow w-full overflow-auto  border border-gray-900"
         onClick={handler.clickOnBox}
       >
         {values.workSheets[values.currentWorkSheet]?.map((index, key) => (
@@ -98,7 +98,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             idRow={key}
             cellValues={index}
             style="flex w-fit border-b border-gray-900 "
-            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 overflow-hidden text-sm bg-white"
+            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 text-sm bg-white"
           />
         ))}
       </table>

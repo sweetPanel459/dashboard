@@ -19,3 +19,21 @@
   font-weight: 600;
   /* Equivalente a font-semibold */
 }
+
+.box-selected {
+  position: relative;
+  --width-selector: 0px;
+  --height-selector: 0px;
+  --scale-w-factor: 1;
+  --scale-h-factor: 1;
+}
+
+.box-selected::after {
+  content: "";
+  position: absolute;
+  inset: 0px;
+  width: calc(var(--width-selector) * (var(--scale-w-factor)));
+  height: calc(var(--height-selector) * var(--scale-h-factor));
+  opacity: 0.9;
+  background: rgba(0, 200, 255, 0.2);
+}
