@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 
+// NOTE: react no actualiza inmediato el state, espera a terminar el renderizado y una vez eso puedes usar useEffect para utilizarlo
+
 // TODO :
-// - mejoras en la ui para el formulario de subir la tabla
-//    1. hacer un indicador visual para saber cual se selecciono
 // - ui para la el registro de admin
 //    1. crear el modal contendor
 //    3. hacer 2 pasos para la confirm
@@ -17,10 +17,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 //    1. armar la estructura del hook
 //    2. mediante el evento submit confirmar si todas las filas tengan la misma cantidad de indices
 //    3. obtener el parametro de url para el user id
-
-// NOTE:
-// - al momento de oprimir el click en una casilla, se optiene su w,h,x,y luego cuando oprimas en la segunda casilla lo multiplicas por el numero de la casilla, en length
-// - primero toca arreglar el error del selector de la tabla, que no esta reiniciando bien los valore
+//
 
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
@@ -30,6 +27,7 @@ export const useSelector = (workSheet) => {
   const [finalRange, setFinalRange] = useState({});
 
   const tableRef = useRef(null);
+  const selectedBoxRef = useRef(null);
 
   useEffect(() => {
     const shiftUp = (e) => {
@@ -38,6 +36,9 @@ export const useSelector = (workSheet) => {
 
         setInitialRange({});
         setFinalRange({});
+
+        selectedBoxRef.current?.classList.remove("box-selected");
+        selectedBoxRef.current = null;
       }
     };
 
@@ -60,17 +61,33 @@ export const useSelector = (workSheet) => {
   const clickOnBox = (e) => {
     if (!e.target.classList.contains("box-table") || !shiftPressed) return;
 
-    const box = e.target.id.split(",");
-    const rowIndex = box[0];
-    const columnIndex = box[1];
+    const element = e.target;
+
+    const boxPosition = element.id.split(",");
+    const currentRow = boxPosition[0];
+    const currentColumn = boxPosition[1];
+
+    const elementsCoorr = element.getBoundingClientRect();
 
     if (Object.keys(initialRange).length === 0) {
-      setInitialRange({ initialRow: rowIndex, initialColumn: columnIndex });
+      selectedBoxRef.current = element;
+      selectedBoxRef.current.classList.add("box-selected");
+
+      selectedBoxRef.current.style.setProperty(
+        "--width-selector",
+        `${elementsCoorr.width}px`,
+      );
+      selectedBoxRef.current.style.setProperty(
+        "--height-selector",
+        `${elementsCoorr.height}px`,
+      );
+
+      setInitialRange({ initialRow: currentRow, initialColumn: currentColumn });
     } else {
       setFinalRange(() => {
         const updatedRange = {
-          finalRow: rowIndex,
-          finalColumn: columnIndex,
+          finalRow: currentRow,
+          finalColumn: currentColumn,
         };
 
         createTable(updatedRange);
@@ -79,6 +96,8 @@ export const useSelector = (workSheet) => {
       });
     }
   };
+
+  const selectorSize = (endRange) => { };
 
   const createTable = (endRange) => {
     const tableTemplate = [];
