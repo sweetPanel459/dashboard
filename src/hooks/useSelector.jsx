@@ -23,8 +23,9 @@ export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
   const [shiftPressed, setShiftPressed] = useState(false);
 
-  const [initialRange, setInitialRange] = useState({});
   const [finalRange, setFinalRange] = useState({});
+  const [initialRange, setInitialRange] = useState({});
+  const [sizeSelector, setSizeSelector] = useState({});
 
   const tableRef = useRef(null);
   const selectedBoxRef = useRef(null);
@@ -91,13 +92,48 @@ export const useSelector = (workSheet) => {
         };
 
         createTable(updatedRange);
+        selectorSize(updatedRange);
 
         return updatedRange;
       });
     }
   };
 
-  const selectorSize = (endRange) => { };
+  const selectorSize = (endRange) => {
+    const result = {
+      row: generateArray(initialRange.initialRow, endRange.finalRow),
+      column: generateArray(initialRange.initialColumn, endRange.finalColumn),
+    };
+
+    const rowLength = result.row.length;
+    const columnLength = result.column.length;
+
+    selectedBoxRef.current.style.setProperty(
+      "--scale-w-factor",
+      `${columnLength}`,
+    );
+
+    selectedBoxRef.current.style.setProperty(
+      "--scale-h-factor",
+      `${rowLength}`,
+    );
+    selectedBoxRef.current.style.setProperty(
+      "--scale-h-extra",
+      `${rowLength}px`,
+    );
+  };
+
+  const generateArray = (initial, final) => {
+    const array = [];
+    const start = Math.min(initial, final);
+    const end = Math.max(initial, final);
+
+    for (let i = start; i <= end; i++) {
+      array.push(i);
+    }
+
+    return initial > final ? array.reverse() : array;
+  };
 
   const createTable = (endRange) => {
     const tableTemplate = [];
@@ -115,8 +151,6 @@ export const useSelector = (workSheet) => {
 
       tableTemplate.push(tableSelected);
     });
-
-    setTable(tableTemplate);
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -127,6 +161,7 @@ export const useSelector = (workSheet) => {
 
   return {
     table,
+    sizeSelector,
     handler: { clickOnBox },
     reference: { registerNodeTable },
   };

@@ -26,14 +26,15 @@
   --height-selector: 0px;
   --scale-w-factor: 1;
   --scale-h-factor: 1;
+  --scale-h-extra: 0px;
 }
 
 .box-selected::after {
   content: "";
   position: absolute;
   inset: 0px;
-  width: calc(var(--width-selector) * (var(--scale-w-factor)));
-  height: calc(var(--height-selector) * var(--scale-h-factor));
+  width: calc(var(--width-selector) * var(--scale-w-factor));
+  height: calc(var(--height-selector) * var(--scale-h-factor) + var(--scale-h-extra));
   opacity: 0.9;
   background: rgba(0, 200, 255, 0.2);
 }
