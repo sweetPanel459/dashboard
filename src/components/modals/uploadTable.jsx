@@ -19,7 +19,7 @@ import "../../styles/modal.css";
 export const UploadTable = ({ modalRef, close }) => {
   const { helper, handlers, values } = useUploadFile();
 
-  const { handler, reference, table } = useSelector(
+  const { handler, reference, table, sizeSelector } = useSelector(
     values.workSheets[values.currentWorkSheet],
   );
 
@@ -98,7 +98,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             idRow={key}
             cellValues={index}
             style="flex w-fit border-b border-gray-900 "
-            styleColm="last:border-r-0 border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 text-sm bg-white"
+            styleColm=" border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 text-sm bg-white"
           />
         ))}
       </table>
