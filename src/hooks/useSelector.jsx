@@ -72,7 +72,7 @@ export const useSelector = (workSheet) => {
 
     if (Object.keys(initialRange).length === 0) {
       selectedBoxRef.current = element;
-      selectedBoxRef.current.classList.add("box-selected");
+      selectedBoxRef.current.classList.add("box--selected");
 
       selectedBoxRef.current.style.setProperty(
         "--width-selector",
@@ -101,29 +101,20 @@ export const useSelector = (workSheet) => {
 
   const selectorSize = (endRange) => {
     const result = {
-      row: generateArray(initialRange.initialRow, endRange.finalRow),
-      column: generateArray(initialRange.initialColumn, endRange.finalColumn),
+      row: generateArray(initialRange.initialRow, endRange.finalRow, "row"),
+      column: generateArray(
+        initialRange.initialColumn,
+        endRange.finalColumn,
+        "col",
+      ),
     };
 
     const rowLength = result.row.length;
     const columnLength = result.column.length;
-
-    selectedBoxRef.current.style.setProperty(
-      "--scale-w-factor",
-      `${columnLength}`,
-    );
-
-    selectedBoxRef.current.style.setProperty(
-      "--scale-h-factor",
-      `${rowLength}`,
-    );
-    selectedBoxRef.current.style.setProperty(
-      "--scale-h-extra",
-      `${rowLength}px`,
-    );
   };
 
-  const generateArray = (initial, final) => {
+  const generateArray = (initial, final, id) => {
+    const isInverted = false;
     const array = [];
     const start = Math.min(initial, final);
     const end = Math.max(initial, final);
@@ -132,7 +123,7 @@ export const useSelector = (workSheet) => {
       array.push(i);
     }
 
-    return initial > final ? array.reverse() : array;
+    if (initial <= final) return array;
   };
 
   const createTable = (endRange) => {
