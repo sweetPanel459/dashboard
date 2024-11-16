@@ -19,7 +19,7 @@ import "../../styles/modal.css";
 export const UploadTable = ({ modalRef, close }) => {
   const { helper, handlers, values } = useUploadFile();
 
-  const { handler, reference, table, sizeSelector } = useSelector(
+  const { handler, reference, table } = useSelector(
     values.workSheets[values.currentWorkSheet],
   );
 
