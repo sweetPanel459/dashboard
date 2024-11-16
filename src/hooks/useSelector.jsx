@@ -109,21 +109,23 @@ export const useSelector = (workSheet) => {
       ),
     };
 
-    const rowLength = result.row.length;
-    const columnLength = result.column.length;
+    const rowLength = result.array.row.length;
+    const columnLength = result.array.column.length;
   };
 
   const generateArray = (initial, final, id) => {
-    const isInverted = false;
     const array = [];
     const start = Math.min(initial, final);
     const end = Math.max(initial, final);
+    let isInverted = false;
 
     for (let i = start; i <= end; i++) {
       array.push(i);
     }
 
-    if (initial <= final) return array;
+    if (!(initial <= final)) isInverted = true;
+
+    return { array, isInverted };
   };
 
   const createTable = (endRange) => {
