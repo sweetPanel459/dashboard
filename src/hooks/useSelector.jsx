@@ -68,21 +68,22 @@ export const useSelector = (workSheet) => {
     const currentRow = boxPosition[0];
     const currentColumn = boxPosition[1];
 
-    const elementsCoorr = element.getBoundingClientRect();
+    const elementCoord = element.getBoundingClientRect();
 
     if (Object.keys(initialRange).length === 0) {
       selectedBoxRef.current = element;
       selectedBoxRef.current.classList.add("box--selected");
 
-      selectedBoxRef.current.style.setProperty(
+      changeProperty(
+        selectedBoxRef.current,
         "--width-selector",
-        `${elementsCoorr.width}px`,
+        `${elementCoord.width}px`,
       );
-      selectedBoxRef.current.style.setProperty(
+      changeProperty(
+        selectedBoxRef.current,
         "--height-selector",
-        `${elementsCoorr.height}px`,
+        `${elementCoord.height}px`,
       );
-
       setInitialRange({ initialRow: currentRow, initialColumn: currentColumn });
     } else {
       setFinalRange(() => {
@@ -91,59 +92,17 @@ export const useSelector = (workSheet) => {
           finalColumn: currentColumn,
         };
 
-        createTable(updatedRange);
-        selectorSize(updatedRange);
+        const generatedTable = createTable(
+          workSheet,
+          initialRange,
+          updatedRange,
+        );
+
+        selectorSize(initialRange, updatedRange);
 
         return updatedRange;
       });
     }
-  };
-
-  const selectorSize = (endRange) => {
-    const result = {
-      row: generateArray(initialRange.initialRow, endRange.finalRow, "row"),
-      column: generateArray(
-        initialRange.initialColumn,
-        endRange.finalColumn,
-        "col",
-      ),
-    };
-
-    const rowLength = result.array.row.length;
-    const columnLength = result.array.column.length;
-  };
-
-  const generateArray = (initial, final, id) => {
-    const array = [];
-    const start = Math.min(initial, final);
-    const end = Math.max(initial, final);
-    let isInverted = false;
-
-    for (let i = start; i <= end; i++) {
-      array.push(i);
-    }
-
-    if (!(initial <= final)) isInverted = true;
-
-    return { array, isInverted };
-  };
-
-  const createTable = (endRange) => {
-    const tableTemplate = [];
-
-    const selectedRows = workSheet.slice(
-      parseInt(initialRange.initialRow),
-      parseInt(endRange.finalRow) + 1,
-    );
-
-    selectedRows.forEach((tableColumns) => {
-      const tableSelected = tableColumns.slice(
-        parseInt(initialRange.initialColumn),
-        parseInt(endRange.finalColumn) + 1,
-      );
-
-      tableTemplate.push(tableSelected);
-    });
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -154,8 +113,65 @@ export const useSelector = (workSheet) => {
 
   return {
     table,
-    sizeSelector,
     handler: { clickOnBox },
     reference: { registerNodeTable },
   };
+};
+
+const changeProperty = (node, property, newValue) => {
+  node.style.setProperty(property, newValue);
+};
+
+const createTable = (workSheet, initialRange, finalRange) => {
+  const tableTemplate = [];
+
+  const selectedRows = workSheet.slice(
+    parseInt(initialRange.initialRow),
+    parseInt(finalRange.finalRow) + 1,
+  );
+
+  selectedRows.forEach((tableColumns) => {
+    const tableSelected = tableColumns.slice(
+      parseInt(initialRange.initialColumn),
+      parseInt(finalRange.finalColumn) + 1,
+    );
+
+    tableTemplate.push(tableSelected);
+  });
+
+  return tableTemplate;
+};
+
+const selectorSize = (initialRange, finalRange) => {
+  const result = {
+    row: generateArray(initialRange.initialRow, finalRange.finalRow),
+    column: generateArray(initialRange.initialColumn, finalRange.finalColumn),
+  };
+
+  const rowLength = result.row.array.length;
+  const columnLength = result.column.array.length;
+
+  const rowIsInverted = result.row.isInverted;
+  const columnIsInverted = result.column.isInverted;
+
+  return {
+    length: { rowLength, columnLength },
+    isInverted: { rowIsInverted, columnIsInverted },
+  };
+};
+
+const generateArray = (initial, final) => {
+  const array = [];
+  const start = Math.min(initial, final);
+  const end = Math.max(initial, final);
+
+  let isInverted = false;
+
+  for (let i = start; i <= end; i++) {
+    array.push(i);
+  }
+
+  if (!(initial <= final)) isInverted = true;
+
+  return { array, isInverted };
 };
