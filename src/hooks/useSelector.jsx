@@ -23,12 +23,23 @@ export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
   const [shiftPressed, setShiftPressed] = useState(false);
 
-  const [finalRange, setFinalRange] = useState({});
   const [initialRange, setInitialRange] = useState({});
+  const [finalRange, setFinalRange] = useState({});
+
   const [sizeSelector, setSizeSelector] = useState({});
 
   const tableRef = useRef(null);
   const selectedBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (Object.keys(finalRange).length != 0) {
+      const generatedTable = createTable(workSheet, initialRange, finalRange);
+      const selectorPropertyes = selectorSize(initialRange, finalRange);
+
+      console.log(selectorPropertyes);
+      setTable(generatedTable);
+    }
+  }, [finalRange]);
 
   useEffect(() => {
     const shiftUp = (e) => {
@@ -86,22 +97,7 @@ export const useSelector = (workSheet) => {
       );
       setInitialRange({ initialRow: currentRow, initialColumn: currentColumn });
     } else {
-      setFinalRange(() => {
-        const updatedRange = {
-          finalRow: currentRow,
-          finalColumn: currentColumn,
-        };
-
-        const generatedTable = createTable(
-          workSheet,
-          initialRange,
-          updatedRange,
-        );
-
-        selectorSize(initialRange, updatedRange);
-
-        return updatedRange;
-      });
+      setFinalRange({ finalRow: currentRow, finalColumn: currentColumn });
     }
   };
 
@@ -155,8 +151,8 @@ const selectorSize = (initialRange, finalRange) => {
   const columnIsInverted = result.column.isInverted;
 
   return {
-    length: { rowLength, columnLength },
     isInverted: { rowIsInverted, columnIsInverted },
+    length: { rowLength, columnLength },
   };
 };
 
