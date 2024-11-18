@@ -2,23 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 
 // NOTE: react no actualiza inmediato el state, espera a terminar el renderizado y una vez eso puedes usar useEffect para utilizarlo
 
-// TODO :
-// - ui para la el registro de admin
-//    1. crear el modal contendor
-//    3. hacer 2 pasos para la confirm
-//    2. tendra 3 inputs, name, gmail y el token enviado
-//    4. hacer un componente para el header que sea un dropdown que contenga opciones sobre el usuario
-// - logica para el registro de admin
-//    1. confimar si el nombre si esta registrado
-//    2. con una exprecion regular confirmar en el front y en el backend si el gmail es correcto
-//    3. si es correcto registrarlo
-//    4. apenas se registre guardarlo en el localstorage su registro y permanecerlo abierto mientras no lo cierre manualmente
-// - custom hook para la preparcion del envio de la tabla
-//    1. armar la estructura del hook
-//    2. mediante el evento submit confirmar si todas las filas tengan la misma cantidad de indices
-//    3. obtener el parametro de url para el user id
-//
-
 export const useSelector = (workSheet) => {
   const [table, setTable] = useState([]);
   const [shiftPressed, setShiftPressed] = useState(false);
@@ -26,17 +9,14 @@ export const useSelector = (workSheet) => {
   const [initialRange, setInitialRange] = useState({});
   const [finalRange, setFinalRange] = useState({});
 
-  const [sizeSelector, setSizeSelector] = useState({});
-
   const tableRef = useRef(null);
-  const selectedBoxRef = useRef(null);
+  const selectorRef = useRef(null);
 
   useEffect(() => {
     if (Object.keys(finalRange).length != 0) {
       const generatedTable = createTable(workSheet, initialRange, finalRange);
       const selectorPropertyes = selectorSize(initialRange, finalRange);
 
-      console.log(selectorPropertyes);
       setTable(generatedTable);
     }
   }, [finalRange]);
@@ -49,8 +29,8 @@ export const useSelector = (workSheet) => {
         setInitialRange({});
         setFinalRange({});
 
-        selectedBoxRef.current?.classList.remove("box-selected");
-        selectedBoxRef.current = null;
+        selectorRef.current?.classList.remove("box-selected");
+        selectorRef.current = null;
       }
     };
 
@@ -82,23 +62,26 @@ export const useSelector = (workSheet) => {
     const elementCoord = element.getBoundingClientRect();
 
     if (Object.keys(initialRange).length === 0) {
-      selectedBoxRef.current = element;
-      selectedBoxRef.current.classList.add("box--selected");
+      selectorRef.current = element;
+      selectorRef.current.classList.add("box-selected");
 
-      changeProperty(
-        selectedBoxRef.current,
-        "--width-selector",
-        `${elementCoord.width}px`,
+      instanceSelect(
+        selectorRef.current,
+        elementCoord.width,
+        elementCoord.height,
       );
-      changeProperty(
-        selectedBoxRef.current,
-        "--height-selector",
-        `${elementCoord.height}px`,
-      );
+
       setInitialRange({ initialRow: currentRow, initialColumn: currentColumn });
     } else {
       setFinalRange({ finalRow: currentRow, finalColumn: currentColumn });
     }
+  };
+
+  // sacarlo de aqui pero despues de termianl la funcion
+
+  const instanceSelect = (node, width, height) => {
+    changeProperty(node, "--width-selector", width);
+    changeProperty(selectorRef.current, "--height-selector", height);
   };
 
   const registerNodeTable = useCallback((node) => {
@@ -170,4 +153,28 @@ const generateArray = (initial, final) => {
   if (!(initial <= final)) isInverted = true;
 
   return { array, isInverted };
+};
+
+const updateInversionClasses = (
+  node,
+  isInvertedRow,
+  isInvertedColumn,
+  sizeRow,
+  sizeColumn,
+) => {
+  if (!node || !(node instanceof HTMLElement)) return;
+
+  const classMap = {
+    "inverted-row": isInvertedRow && !isInvertedColumn,
+    "inverted-column": isInvertedColumn && !isInvertedRow,
+    "inverted-both": isInvertedRow && isInvertedColumn,
+  };
+
+  Object.keys(classMap).forEach((className) =>
+    node.classList.remove(className),
+  );
+
+  Object.entries(classMap)
+    .filter(([_, shouldAdd]) => shouldAdd)
+    .forEach(([className]) => node.classList.add(className));
 };
