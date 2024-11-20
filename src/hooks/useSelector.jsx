@@ -17,7 +17,19 @@ export const useSelector = (workSheet) => {
       const generatedTable = createTable(workSheet, initialRange, finalRange);
       const selectorPropertyes = selectorSize(initialRange, finalRange);
 
-      setTable(generatedTable);
+      const isInvertedRow = selectorPropertyes.isInverted.rowIsInverted;
+      const isInvertedColumn = selectorPropertyes.isInverted.columnIsInverted;
+
+      const rowSize = selectorPropertyes.length.rowLength;
+      const columnSize = selectorPropertyes.length.columnLength;
+
+      invertedSelector(
+        selectorRef.current,
+        isInvertedRow,
+        isInvertedColumn,
+        rowSize,
+        columnSize,
+      );
     }
   }, [finalRange]);
 
@@ -28,6 +40,10 @@ export const useSelector = (workSheet) => {
 
         setInitialRange({});
         setFinalRange({});
+
+        selectorRef.current?.style.setProperty("--scale-w-factor", 1);
+        selectorRef.current?.style.setProperty("--scale-h-factor", 1);
+        selectorRef.current?.style.setProperty("--scale-h-extra", `0px`);
 
         selectorRef.current?.classList.remove("box-selected");
         selectorRef.current = null;
@@ -65,10 +81,13 @@ export const useSelector = (workSheet) => {
       selectorRef.current = element;
       selectorRef.current.classList.add("box-selected");
 
-      instanceSelect(
-        selectorRef.current,
-        elementCoord.width,
-        elementCoord.height,
+      selectorRef.current.style.setProperty(
+        "--width-selector",
+        `${elementCoord.width}px`,
+      );
+      selectorRef.current.style.setProperty(
+        "--height-selector",
+        `${elementCoord.height}px`,
       );
 
       setInitialRange({ initialRow: currentRow, initialColumn: currentColumn });
@@ -78,11 +97,6 @@ export const useSelector = (workSheet) => {
   };
 
   // sacarlo de aqui pero despues de termianl la funcion
-
-  const instanceSelect = (node, width, height) => {
-    changeProperty(node, "--width-selector", width);
-    changeProperty(selectorRef.current, "--height-selector", height);
-  };
 
   const registerNodeTable = useCallback((node) => {
     if (!node) return;
@@ -155,7 +169,7 @@ const generateArray = (initial, final) => {
   return { array, isInverted };
 };
 
-const updateInversionClasses = (
+const invertedSelector = (
   node,
   isInvertedRow,
   isInvertedColumn,
@@ -163,6 +177,12 @@ const updateInversionClasses = (
   sizeColumn,
 ) => {
   if (!node || !(node instanceof HTMLElement)) return;
+
+  // esto se va a pasar antes de esta funcion, pero mientras el desarrollo lo hago aqui
+
+  node.style.setProperty("--scale-w-factor", sizeColumn);
+  node.style.setProperty("--scale-h-factor", sizeRow);
+  node.style.setProperty("--scale-h-extra", `${sizeRow}px`);
 
   const classMap = {
     "inverted-row": isInvertedRow && !isInvertedColumn,
