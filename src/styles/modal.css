@@ -24,12 +24,11 @@
   position: relative;
   --width-selector: 0px;
   --height-selector: 0px;
+
   --scale-w-factor: 1;
   --scale-h-factor: 1;
   --scale-h-extra: 0px;
-
-  --total-w: calc(var(--width-selector) * var(--scale-w-factor));
-  --total-h: calc(var(--height-selector) * var(--scale-h-factor) + var(--scale-h-extra));
+  transform: initial;
 }
 
 .box-selected::after {
@@ -37,8 +36,8 @@
   inset: 0px;
   position: absolute;
 
-  width: var(--total-w);
-  height: var(--total-h);
+  width: calc(var(--width-selector) * var(--scale-w-factor));
+  height: calc(var(--height-selector) * var(--scale-h-factor) + var(--scale-h-extra));
   transform-origin: 0 0;
 
   opacity: 0.9;
@@ -46,13 +45,13 @@
 }
 
 .inverted-row::after {
-  transform: translateX(calc(var(--width-selector) - var(--width-selector))) translateY(calc(var(--height-selector) * -1));
+  transform: translateY(calc(var(--height-selector) * var(--scale-h-factor) * -1 - var(--height-selector) * -1));
 }
 
 .inverted-column::after {
-  transform: translateX(calc(var(--width-selector) * -1)) translateY(calc(var(--height-selector) - var(--height-selector)));
+  transform: translateX(calc(var(--width-selector) * var(--scale-w-factor) * -1 - var(--width-selector) * -1));
 }
 
 .inverted-both::after {
-  transform: translateX(calc(var(--width-selector) * -1)) translateY(calc(var(--height-selector) * -1));
+  transform: translateX(calc(var(--width-selector) * var(--scale-w-factor) * -1 - var(--width-selector) * -1)) translateY(calc(var(--height-selector) * var(--scale-h-factor) * -1 - var(--height-selector) * -1));
 }

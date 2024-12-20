@@ -114,7 +114,7 @@ const FileOptions = ({ values, reference, handler, helper }) => {
             key={key}
             idRow={key}
             cellValues={index}
-            style="flex w-fit border-b border-gray-900 "
+            style="flex w-fit border-b border-gray-900"
             styleColm=" border-r border-gray-900 box-table select-none flex items-center justify-center  w-52 h-10 text-sm bg-white"
           />
         ))}
